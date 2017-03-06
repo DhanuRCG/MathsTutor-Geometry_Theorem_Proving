@@ -1,0 +1,40 @@
+//created on: Feb 3, 2017
+package com.ratio
+import com.geometry.*;
+//list any import classes here.
+
+
+
+//declare any global variables here
+
+
+
+
+rule "theorem27"
+
+    when
+        //conditions
+          //triangle
+         $ABC : Triangle()
+        //two parallel line
+        $DEparaBC : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.PARALLEL_LINES )
+   		$ABonD : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	$AConE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	eval(!$ABonD.sameRelation($AConE))
+    	eval($ABC.isALine((Line)$DEparaBC.firstItem) || $ABC.isALine((Line)$DEparaBC.secondItem))
+    	eval($ABC.isALine((Line)$ABonD.firstItem))
+    	eval($ABC.isALine((Line)$AConE.firstItem))
+    	eval((((Line)$DEparaBC.firstItem).isAPoint((Point)$ABonD.secondItem) && ((Line)$DEparaBC.firstItem).isAPoint((Point)$AConE.secondItem) )
+    	|| (((Line)$DEparaBC.secondItem).isAPoint((Point)$ABonD.secondItem) && ((Line)$DEparaBC.secondItem).isAPoint((Point)$AConE.secondItem) ))
+    then
+        //actions
+        Line AD = new Line(((Line)$ABonD.firstItem).endPoints[0],(Point)$ABonD.secondItem);
+        Line BD = new Line(((Line)$ABonD.firstItem).endPoints[1],(Point)$ABonD.secondItem);
+        Line AE = new Line(((Line)$AConE.firstItem).endPoints[0],(Point)$ABonD.secondItem);
+        Line BE = new Line(((Line)$AConE.firstItem).endPoints[1],(Point)$ABonD.secondItem);
+         RetioGeoRelation rela = new RetioGeoRelation(AD, BD,Relation.EQUALS,AE,BE);
+        System.out.println("Theorem 27");
+
+end
+
+

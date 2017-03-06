@@ -1,0 +1,50 @@
+//created on: Feb 3, 2017
+package com.retio
+
+//list any import classes here.
+import com.geometry.*;
+
+
+//declare any global variables here
+
+
+
+
+rule "Theorem29"
+
+    when
+     //conditions
+    $ABC : Triangle()
+    $XYZ : Triangle()
+    eval(! $ABC.sameItem($XYZ))
+    $ABCcongruentDEF : GeoRelation( this.firstItem.type == GeoType.TRIANGLE, this.secondItem.type == GeoType.TRIANGLE, this.relation==Relation.CONGRUENT )
+    eval(((Triangle)$ABCcongruentDEF.firstItem).sameItem($ABC))	
+    eval(((Triangle)$ABCcongruentDEF.secondItem).sameItem($XYZ))
+    eval($ABCcongruentDEF.reason == "කෝ.කෝ.කෝ.")
+    $abcequaldef : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+   	$bcaequalefd : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+   	eval( !$abcequaldef.sameRelation($bcaequalefd))
+    $cabequalfde : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+   	eval( !$abcequaldef.sameRelation($cabequalfde))
+   	eval( !$bcaequalefd.sameRelation($cabequalfde))
+   	
+   	//angle are contain trianle
+   	eval( $ABC.isAnAngle((Angle)$abcequaldef.firstItem) || $ABC.isAnAngle((Angle)$abcequaldef.secondItem) )
+   	eval( $ABC.isAnAngle((Angle)$bcaequalefd.firstItem) || $ABC.isAnAngle((Angle)$bcaequalefd.secondItem) )
+   	eval( $ABC.isAnAngle((Angle)$cabequalfde.firstItem) || $ABC.isAnAngle((Angle)$cabequalfde.secondItem) )
+   	
+   	eval( $XYZ.isAnAngle((Angle)$abcequaldef.firstItem) || $XYZ.isAnAngle((Angle)$abcequaldef.secondItem) )
+   	eval( $XYZ.isAnAngle((Angle)$bcaequalefd.firstItem) || $XYZ.isAnAngle((Angle)$bcaequalefd.secondItem) )
+   	eval( $XYZ.isAnAngle((Angle)$cabequalfde.firstItem) || $XYZ.isAnAngle((Angle)$cabequalfde.secondItem) )
+   	
+    then
+        //actions
+        //
+         RetioGeoRelation rela1 = new RetioGeoRelation(((Angle)$abcequaldef.firstItem).directionLeft, ((Angle)$abcequaldef.firstItem).directionRight,Relation.EQUALS,((Angle)$abcequaldef.secondItem).directionLeft,((Angle)$abcequaldef.secondItem).directionRight);
+         RetioGeoRelation rela2 = new RetioGeoRelation(((Angle)$bcaequalefd.firstItem).directionLeft, ((Angle)$bcaequalefd.firstItem).directionRight,Relation.EQUALS,((Angle)$bcaequalefd.secondItem).directionLeft,((Angle)$bcaequalefd.secondItem).directionRight);
+         RetioGeoRelation rela3 = new RetioGeoRelation(((Angle)$cabequalfde.firstItem).directionLeft, ((Angle)$cabequalfde.firstItem).directionRight,Relation.EQUALS,((Angle)$cabequalfde.secondItem).directionLeft,((Angle)$cabequalfde.secondItem).directionRight);
+      
+        System.out.println("Theorem 29");
+
+end
+

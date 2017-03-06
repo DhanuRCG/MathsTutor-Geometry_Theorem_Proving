@@ -1,0 +1,304 @@
+package com.geometry
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.test.Log;
+import com.engine.CheckingEngine;
+
+//Transitive property
+rule "transitive"
+no-loop true
+	when
+		$relation1 : (GeoRelation($re1: (relation)
+    	&& $item1:(firstItem)
+    	&& $item2:(secondItem) && $relation1Type : (relationType)
+    	))
+    	
+    	eval($relation1Type == RelationType.GEO_RELATION)
+    	$relation2 : (GeoRelation($re2: (relation)
+    	&& $item3:(firstItem)
+    	&& $item4:(secondItem) && $relation2Type : (relationType)
+    	))
+		eval($relation2Type == RelationType.GEO_RELATION)
+		
+		eval(!$relation1.sameRelation($relation2))
+		eval($re1 == $re2)
+		eval($re1 != Relation.ON_THE_LINE && $re1 != Relation.MIDPOINT)
+		eval($item2.sameItem($item3) || $item1.sameItem($item3) || $item2.sameItem($item4))
+	then
+		
+		GeoRelation transitiveRelation;
+		if($item2.sameItem($item3))
+			transitiveRelation = new GeoRelation($item1,$item4,$re1);
+		else if($item1.sameItem($item3))
+			transitiveRelation = new GeoRelation($item2,$item4,$re1);
+		else
+			transitiveRelation = new GeoRelation($item1,$item3,$re1);
+			
+		String info = "Transitive : " + $relation1.getName()+ " && "+$relation2.getName() + " --> "+transitiveRelation.getName();
+		Log.logger.info(info);	
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(transitiveRelation);
+    	CheckingEngine.graph.addNode(transitiveRelation,$relation1, $relation2);
+    	
+    	
+end
+
+//Transitive property
+rule "transitive-factor"
+no-loop true
+	when
+		$relation1 : (GeoRelation($re1: (relation)
+    	&& $item1:(firstItem)
+    	&& $item2:(secondItem) && $relation1Type : (relationType)
+    	))
+    	
+    	eval($relation1Type == RelationType.FACTOR_GEO_RELATION)
+    	
+    	$relation2 : (GeoRelation($re2: (relation)
+    	&& $item3:(firstItem)
+    	&& $item4:(secondItem) && $relation2Type : (relationType)
+    	))
+		eval($relation2Type == RelationType.FACTOR_GEO_RELATION)
+		
+		eval(!$relation1.sameRelation($relation2))
+		eval($re1 == $re2)
+		eval($item2.sameItem($item3) || $item1.sameItem($item3) || $item2.sameItem($item4))
+	then
+		boolean factorSame = ((FactorGeoRelation)$relation1).sameFactor($relation2);
+		GeoRelation transitiveRelation = null;
+		if($item2.sameItem($item3)){
+			String factor = ((FactorGeoRelation)$relation1).getFactor()+"*"+((FactorGeoRelation)$relation2).getFactor();
+			transitiveRelation = new FactorGeoRelation($item1,$item4,$re1,factor);
+		}
+		else if($item1.sameItem($item3) && factorSame)
+			transitiveRelation = new GeoRelation($item2,$item4,$re1);
+		else if(factorSame)
+			transitiveRelation = new GeoRelation($item1,$item3,$re1);
+		if(transitiveRelation != null){
+			String info = "Transitive-Factor : " + $relation1.getName()+ " && "+$relation2.getName() + " --> "+transitiveRelation.getName();
+			Log.logger.info(info);	
+    		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(transitiveRelation);
+    	CheckingEngine.graph.addNode(transitiveRelation, $relation1, $relation2);
+    	}
+    	
+//    	System.out.println(info);
+    	
+    	
+    	
+    	
+end 
+
+//new angle names relations making with on the line
+rule "Angles name generating" 
+no-loop true
+    when
+	    GeoRelation( this.firstItem.type == GeoType.LINE, 
+	    			this.secondItem.type == GeoType.POINT, 
+	    			this.relation==Relation.ON_THE_LINE, 
+	    			$AB : ((Line)firstItem),  $C : ((Point)secondItem)
+	    			)			
+	    $A: Point()
+	    eval ( !$A.sameItem($C) && $AB.isAPoint($A))
+	    $B: Point()
+		eval ($AB.isAPoint($B) && !$B.sameItem($A) && !$B.sameItem($C))
+		eval($AB.isAPoint($A) && $AB.isAPoint($B))
+	    $AD: Line()
+	    eval($AD.isAPoint($A))
+	    $D: Point()
+	    eval($AD.isAPoint($D) && !$D.sameItem($A) &&  !$D.sameItem($C) && !$D.sameItem($B))
+	    $AC: Line()
+	    eval($AC.isAPoint($A) && $AC.isAPoint($C))
+	    $DAC: Angle()
+		eval($DAC.isALine($AD) && $DAC.isALine($AC))
+	    $DAB: Angle()
+		eval($DAB.isALine($AD) && $DAB.isALine($AB))
+		
+    then
+        //actions
+        GeoRelation angleEquilation = new GeoRelation($DAB, $DAC,Relation.EQUALS);
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(angleEquilation);
+    	CheckingEngine.hashTestKnowledge.addGeoRelation($DAB.getName(),$DAC.getName());
+    	String info = "Same angle : " + angleEquilation.getName();
+    	Log.logger.info(info);
+    	CheckingEngine.graph.anotherNameForSameAngle($DAB, $DAC);
+    	
+
+end
+
+//Symmetric property 
+rule "Symmetric"
+
+	when 
+		$geoRelation : (GeoRelation($relation1: (relation)
+    	&& $item1:(firstItem)
+    	&& $item2:(secondItem) && $relationType1: (relationType)
+    	))
+    	
+		eval($relation1 != Relation.ON_THE_LINE && $relation1 != Relation.MIDPOINT && 
+			$relationType1 != RelationType.FACTOR_GEO_RELATION)
+		
+	then 
+		GeoRelation symmetricRelation = new GeoRelation($item2,$item1,$relation1);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(symmetricRelation);
+		String info = "Symmetric : "+ $geoRelation.getName()+ " --> "+symmetricRelation.getName();
+		Log.logger.info(info);	
+    	CheckingEngine.graph.addNode(symmetricRelation, $geoRelation);
+		//insert(symmetricRelation); 
+		
+		//***************************************
+		//   IMPORTANT
+		// insert commen thing in to one please possibly initial data
+		// to prevent infinite looping
+		
+end
+
+//AB parallel DE && AB is extented to C then AC parallel DE
+rule "paralell lines Extended with on the line"
+	when
+		$relation1 : (GeoRelation(this.relation==Relation.PARALLEL_LINES,$AB : ((Line)firstItem),$DE : ((Line)secondItem)))
+	    			
+	    GeoRelation(this.relation==Relation.ON_THE_LINE,$AC : ((Line)firstItem),  $B : ((Point)secondItem))
+	    
+	    eval(!$AC.sameItem($DE))	
+	    eval($AB.isAPoint($B))		
+	    $A: Point()
+	    eval($AC.isAPoint($A) && $AB.isAPoint($A) )
+		
+then
+
+		GeoRelation newParallel = new GeoRelation($AC,$DE,Relation.PARALLEL_LINES);
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(newParallel);
+		Log.logger.info("Extended Parallel Lines : "+$relation1.getName()+" --> " + newParallel.getName());
+		insert($relation1);
+
+end 
+
+//AC parallel DE && B is on AC then AB parallel DE & BC parallel DE
+rule "paralell lines with a point on one parallel line"
+	when
+		$relation1 : (GeoRelation(this.relation==Relation.PARALLEL_LINES,$AC : ((Line)firstItem),$DE : ((Line)secondItem)))
+	    			
+	    GeoRelation(this.relation==Relation.ON_THE_LINE,$AC_dup : ((Line)firstItem),  $B : ((Point)secondItem))
+	    
+	    eval($AC.sameItem($AC_dup))	
+		
+then
+		Line AB = new Line($AC.endPoints[0],$B);
+		Line BC = new Line($B,$AC.endPoints[1]);
+		GeoRelation newParallel1 = new GeoRelation(AB,$DE,Relation.PARALLEL_LINES);
+		GeoRelation newParallel2 = new GeoRelation(BC,$DE,Relation.PARALLEL_LINES);
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(newParallel1);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(newParallel2);
+		Log.logger.info("Sub Parallel Lines : "+$relation1.getName()+" --> " + newParallel1.getName());
+		Log.logger.info("Sub Parallel Lines : "+$relation1.getName()+" --> " + newParallel2.getName());
+		insert($relation1);
+		
+		
+end 
+
+//Generete equal lines when a midpoint present
+rule "Midpoint"
+when
+	$DmidAB : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.MIDPOINT )
+    
+then
+	Line AD =new Line((((Line)$DmidAB.firstItem).endPoints[0]),(Point)$DmidAB.secondItem);
+	Line BD = new Line((((Line)$DmidAB.firstItem).endPoints[1]),(Point)$DmidAB.secondItem);
+	
+	GeoRelation ADeqBD = new GeoRelation(AD,BD,Relation.EQUALS);
+	GeoRelation ADhalfAB = new FactorGeoRelation(AD,(Line)$DmidAB.firstItem,Relation.EQUALS,"(1/2)");
+	GeoRelation BDhalfAB = new FactorGeoRelation(BD,(Line)$DmidAB.firstItem,Relation.EQUALS,"(1/2)");
+	
+	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ADeqBD);
+	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ADhalfAB);
+	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(BDhalfAB);
+	
+	Log.logger.info($DmidAB.getName()+" --> " + ADeqBD.getName());
+	Log.logger.info($DmidAB.getName()+" --> " + ADhalfAB.getName());
+	Log.logger.info($DmidAB.getName()+" --> " + BDhalfAB.getName());
+	CheckingEngine.graph.addNode(ADhalfAB, $DmidAB);
+	CheckingEngine.graph.addNode(BDhalfAB, $DmidAB);
+	CheckingEngine.graph.addNode(ADeqBD, $DmidAB);
+	
+	//insert(ADhalfAB);
+	//insert(BDhalfAB);
+		
+end
+
+//Generate Midpoint when a line intersect equally
+rule "Midpoint version 02"
+	when
+		$ConAB : GeoRelation(relation == Relation.ON_THE_LINE && $AB : ((Line)(firstItem)) && $C : ((Point)secondItem))
+		$ACeqBC : GeoRelation(firstItem.type == GeoType.LINE, secondItem.type == GeoType.LINE,relation == Relation.EQUALS)
+		
+		eval(((Line)$ACeqBC.firstItem).isAPoint($C) && ((Line)$ACeqBC.secondItem).isAPoint($C))
+		eval((((Line)$ACeqBC.firstItem).isAPoint($AB.endPoints[0]) && ((Line)$ACeqBC.secondItem).isAPoint($AB.endPoints[1])) ||
+		     (((Line)$ACeqBC.firstItem).isAPoint($AB.endPoints[1]) && ((Line)$ACeqBC.secondItem).isAPoint($AB.endPoints[0])))
+	then
+		GeoRelation AChalfAB = new FactorGeoRelation((Line)$ACeqBC.firstItem,$AB,Relation.EQUALS,"(1/2)");
+		GeoRelation BChalfAB = new FactorGeoRelation((Line)$ACeqBC.secondItem,$AB,Relation.EQUALS,"(1/2)");
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(AChalfAB);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(BChalfAB);
+		CheckingEngine.reasonHolder.addReason(AChalfAB,((Line)$ACeqBC.firstItem).getName()+" = "+((Line)$ACeqBC.firstItem).getName());
+		CheckingEngine.reasonHolder.addReason(BChalfAB,((Line)$ACeqBC.firstItem).getName()+" = "+((Line)$ACeqBC.firstItem).getName());
+		Log.logger.info("MidPoint : "+$ACeqBC.getName()+" --> " + AChalfAB.getName());
+		Log.logger.info("MidPoint : "+$ACeqBC.getName()+" --> " + BChalfAB.getName());
+		
+		CheckingEngine.graph.addNode(AChalfAB, $ConAB, $ACeqBC);
+		CheckingEngine.graph.addNode(BChalfAB, $ConAB, $ACeqBC);
+		
+		insert(AChalfAB);
+		insert(BChalfAB);
+
+		
+end
+
+rule "sameLine Angle and equal"
+	when
+		$abc_eq_cbd : GeoRelation(relation == Relation.EQUALS, firstItem.type == GeoType.ANGLE, secondItem.type == GeoType.ANGLE, $abc1 : ((Angle)firstItem) , $cbd1 : ((Angle)secondItem))
+		$abc_and_cbd : AdjacentAnglesOnALineRelation(relationType == RelationType.ADJACENT_ANGLES_ON_A_LINE_RELATION,relation == Relation.EQUALS, firstItem.type == GeoType.ANGLE, secondItem.type == GeoType.ANGLE, $abc2 : ((Angle)firstItem) , $cbd2 : ((Angle)secondItem))
+		eval($abc1.sameItem($abc2) || $abc1.sameItem($cbd2))
+		eval($cbd1.sameItem($abc2) || $cbd1.sameItem($cbd2))
+	then
+		GeoValue v= new GeoValue("90");
+		
+		
+		GeoRelation g1 = new GeoRelation($abc1,v,Relation.EQUALS);
+		g1.relationType=RelationType.VALUE_GEO_RELATION;
+		GeoRelation g2 = new GeoRelation($cbd1,v,Relation.EQUALS);
+		g1.relationType=RelationType.VALUE_GEO_RELATION;
+		
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g1);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g2);
+		//System.out.println(g1.getName());
+		CheckingEngine.graph.addNode(g1);
+		CheckingEngine.graph.addNode(g2);
+		
+		
+end
+rule "pependicular"
+	when
+	$AC_pe_BM : GeoRelation(relation == Relation.PERPENDICULAR, firstItem.type == GeoType.LINE, secondItem.type == GeoType.LINE, $AC1 : ((Line)firstItem) , $BM1 : ((Line)secondItem))
+	$AC_pe_DM : GeoRelation(relation == Relation.PERPENDICULAR, firstItem.type == GeoType.LINE, secondItem.type == GeoType.LINE, $AC2 : ((Line)firstItem) , $DM1 : ((Line)secondItem))
+	$BM2 : Line()
+	$DM2 : Line()
+	eval(!$BM2.sameItem($DM2))
+	eval($AC1.sameItem($AC2) || $AC1.sameItem($DM1) || $BM1.sameItem($AC2) || $BM1.sameItem($DM1))
+	eval(($BM2.sameItem($AC1) || $BM2.sameItem($BM1)) && ($DM2.sameItem($AC2)|| $DM2.sameItem($DM1)))
+	$BDonM : GeoRelation(relation == Relation.ON_THE_LINE , $BD : ((Line)(firstItem)) , $M : ((Point)secondItem))
+	eval($BM2.isAPoint($M))
+	eval($DM2.isAPoint($M))
+	eval(($BM2.isAPoint($BD.endPoints[0]) && $DM2.isAPoint($BD.endPoints[1])) || ($DM2.isAPoint($BD.endPoints[0]) && $BM2.isAPoint($BD.endPoints[1])))
+	
+	then
+	
+		GeoRelation rel = new GeoRelation($AC1,$BD,Relation.PERPENDICULAR);
+	    
+	    //AdjacentAnglesOnALineRelation rel = new AdjacentAnglesOnALineRelation()
+	    //insert into TransitionKnowledgeHolder
+	    CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(rel);
+		CheckingEngine.graph.addNode(rel);
+end

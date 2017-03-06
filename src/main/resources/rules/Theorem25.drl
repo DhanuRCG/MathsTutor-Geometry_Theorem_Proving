@@ -1,0 +1,83 @@
+//created on: Dec 30, 2016
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.*;
+
+//declare any global variables here
+
+
+
+rule "Theorem25_1"
+
+    when
+        //conditions
+          //triangle
+         $AXB : Triangle()
+           //triangle
+         $ACX : Triangle()
+         eval(!$AXB .sameItem($ACX ))
+         //base for two trianlge
+         //two line
+         $BX : Line()
+         $CX : Line()
+         eval(!$BX .sameItem($CX ))
+         $BConX : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	//two triangle
+    	
+    	//two different line
+    	//
+    	//is two line contain onthe line
+    	eval($BX.isAPoint((Point)$BConX.secondItem))
+    	eval($CX.isAPoint((Point)$BConX.secondItem))
+    	eval($BX.isAPoint(((Line)$BConX.firstItem).endPoints[0])||$BX.isAPoint(((Line)$BConX.firstItem).endPoints[1]))
+    	eval($CX.isAPoint(((Line)$BConX.firstItem).endPoints[0])||$CX.isAPoint(((Line)$BConX.firstItem).endPoints[1]))
+    	//triangle contain two line
+    	eval($AXB.isALine($BX))
+    	eval($ACX.isALine($CX))
+    	//triangle contain commen line
+    	eval($AXB.isALine($ACX.lines[0]) || $AXB.isALine($ACX.lines[1]) || $AXB.isALine($ACX.lines[2]))
+    then
+        //actions
+       
+        RetioGeoRelation rela = new RetioGeoRelation($AXB, $ACX,Relation.EQUALS,$BX,$CX);
+        System.out.println("Theorem 25 - 1");
+
+end
+rule "Theorem25_2"
+
+    when
+        //conditions
+          //triangle
+         $AXB : Triangle()
+           //triangle
+         $ACB : Triangle()
+         eval(!$AXB .sameItem($ACB ))
+         //base for two trianlge
+         //two line
+         $BX : Line()
+         $BC : Line()
+         eval(!$BX .sameItem($BC ))
+         $BConX : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	//
+    	 eval($BC .sameItem((Line)$BConX.firstItem ))
+    	//two different line
+    	//
+    	//is two line contain onthe line
+    	eval($BX.isAPoint((Point)$BConX.secondItem))
+    	
+    	eval($BX.isAPoint(((Line)$BConX.firstItem).endPoints[0])||$BX.isAPoint(((Line)$BConX.firstItem).endPoints[1]))
+    	//eval($CX.isAPoint(((Line)$BConX.firstItem).endPoints[0])||$CX.isAPoint(((Line)$BConX.firstItem).endPoints[1]))
+    	//triangle contain two line
+    	eval($AXB.isALine($BX))
+    	eval($ACB.isALine($BC))
+    	//triangle contain commen line
+    	eval($AXB.isALine($ACB.lines[0]) || $AXB.isALine($ACB.lines[1]) || $AXB.isALine($ACB.lines[2]))
+    then
+        //actions
+       
+        RetioGeoRelation rela = new RetioGeoRelation($AXB, $ACB,Relation.EQUALS,$BX,$BC);
+        System.out.println("Theorem 25 - 2");
+
+end

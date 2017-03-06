@@ -1,0 +1,60 @@
+package com.geometry
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.GeoRelation;
+import com.engine.CheckingEngine;
+import com.geometry.Quadrangle;
+import com.test.Log;
+
+//"vertical angles created from two intersecting lines are equal"
+rule "Theorem 2"
+	//Conditions
+	when
+		//There should be two on the line relations
+	 	GeoRelation( this.firstItem.type == GeoType.LINE, 
+	    			this.secondItem.type == GeoType.POINT, 
+	    			this.relation==Relation.ON_THE_LINE, 
+	    			$AB : ((Line)firstItem),  $O : ((Point)secondItem)
+	    			)
+	 
+	  	GeoRelation( this.firstItem.type == GeoType.LINE, 
+	    			this.secondItem.type == GeoType.POINT, 
+	    			this.relation==Relation.ON_THE_LINE, 
+	    			$CD : ((Line)firstItem),  $O1 : ((Point)secondItem)
+	    			)
+	    //Two different lines shold intersect at common point
+	    eval(!($AB.isAPoint($CD.endPoints[0]) || $AB.isAPoint($CD.endPoints[1])))				
+		eval($O.sameItem($O1))
+		
+	then
+	
+		Line AO = new Line($AB.endPoints[0],$O);
+		Line BO = new Line($AB.endPoints[1],$O);
+		Line CO = new Line($CD.endPoints[0],$O);
+		Line DO = new Line($CD.endPoints[1],$O);
+	
+		Angle AOD = new Angle(AO, DO);
+		Angle AOC = new Angle(CO, AO);
+		Angle COB = new Angle(BO, CO);
+		Angle BOD = new Angle(DO, BO);
+	
+		GeoRelation angleEquilation1 = new GeoRelation(AOD, COB,Relation.EQUALS);
+		GeoRelation angleEquilation2 = new GeoRelation(AOC, BOD,Relation.EQUALS);
+        
+        String oppositeAngle = "Theorem 2 : "+$AB.getName()+" intersect "+$CD.getName()+ " at "+$O.getName()+ " --> "+angleEquilation1.getName();
+		Log.logger.info(oppositeAngle);
+		oppositeAngle = "Theorem 2 : "+$AB.getName()+" intersect "+$CD.getName()+ " at "+$O.getName()+ " --> "+angleEquilation2.getName();
+		Log.logger.info(oppositeAngle);
+	
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(angleEquilation1);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(angleEquilation2);
+		CheckingEngine.reasonHolder.addReason(angleEquilation1,"ප්‍රතිමුඛ කෝණ");
+		CheckingEngine.reasonHolder.addReason(angleEquilation2,"ප්‍රතිමුඛ කෝණ");
+		CheckingEngine.graph.addNode(angleEquilation1,"ප්‍රතිමුඛ කෝණ");
+		CheckingEngine.graph.addNode(angleEquilation2,"ප්‍රතිමුඛ කෝණ");
+//		insert(angleEquilation1);
+//		insert(angleEquilation2);
+	
+end	

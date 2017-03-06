@@ -1,0 +1,41 @@
+package com.geometry
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.GeoRelation;
+import com.engine.CheckingEngine;
+import com.geometry.Quadrangle;
+import com.test.Log;
+
+
+rule "Theorem30"
+
+    when
+        //conditions
+        
+    	$ABC : Triangle()
+    	$XYZ : Triangle()
+    	eval(! $ABC.sameItem($XYZ))
+        $ABratioXYequalACratioYZ : RetioGeoRelation(this.firstItem.type == GeoType.LINE,this.secondItem.type == GeoType.LINE,this.relation==Relation.EQUALS,this.thirdItem.type == GeoType.LINE,this.fourthItem.type == GeoType.LINE)
+    	
+    	$ACratioYZequalBCratioYZ : RetioGeoRelation(this.firstItem.type == GeoType.LINE,this.secondItem.type == GeoType.LINE,this.relation==Relation.EQUALS,this.thirdItem.type == GeoType.LINE,this.fourthItem.type == GeoType.LINE)
+    	
+    	eval( !$ABratioXYequalACratioYZ.sameRelation($ACratioYZequalBCratioYZ))
+    	
+    	eval((((Line)$ABratioXYequalACratioYZ.firstItem).sameItem((Line)$ACratioYZequalBCratioYZ.firstItem) && ((Line)$ABratioXYequalACratioYZ.secondItem).sameItem((Line)$ACratioYZequalBCratioYZ.secondItem) )||
+    	(((Line)$ABratioXYequalACratioYZ.firstItem).sameItem((Line)$ACratioYZequalBCratioYZ.thirdItem) && ((Line)$ABratioXYequalACratioYZ.secondItem).sameItem((Line)$ACratioYZequalBCratioYZ.fourthItem) ) ||
+    	(((Line)$ABratioXYequalACratioYZ.thirdItem).sameItem((Line)$ACratioYZequalBCratioYZ.firstItem) && ((Line)$ABratioXYequalACratioYZ.fourthItem).sameItem((Line)$ACratioYZequalBCratioYZ.secondItem) )||
+    	(((Line)$ABratioXYequalACratioYZ.thirdItem).sameItem((Line)$ACratioYZequalBCratioYZ.thirdItem) && ((Line)$ABratioXYequalACratioYZ.fourthItem).sameItem((Line)$ACratioYZequalBCratioYZ.fourthItem) )
+    	
+    	
+    	)
+    	
+    then
+        //actions
+        GeoRelation ABCcongruenceXYZ = new GeoRelation($ABC,$XYZ,Relation.CONGRUENT);
+        ABCcongruenceXYZ.reason = "කෝ.කෝ.කෝ.";
+       System.out.println("Theorem 30");
+end
+
+

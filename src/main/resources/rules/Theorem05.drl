@@ -1,0 +1,64 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.test.Log;
+import com.engine.CheckingEngine;
+//declare any global variables here
+
+//function
+
+
+rule "Theorem5"
+
+    when
+        //conditions
+        // get two triangle
+        $ABC : Triangle()
+        $CDE : Triangle()
+        //two eqal angle
+       $ABC_equal_DEF : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+        //get two equal lie
+        $AB_equal_DE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+      //get two equal line
+		$BC_equal_EF : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+      	//two different triangle
+        eval(!$ABC.sameItem($CDE))
+      	//two angle different item
+      	eval(!((Angle)$ABC_equal_DEF.firstItem).sameItem((Angle)$ABC_equal_DEF.secondItem))
+      	//two angle contain two diffetent trianlge
+      	//ABC_equal_DEF first item contain ABC triangle send item contain CDE triangle or other way
+      	eval(($ABC.isAPoint(((Angle)$ABC_equal_DEF.firstItem).pointOne) && $ABC.isAPoint(((Angle)$ABC_equal_DEF.firstItem).middle) && $ABC.isAPoint(((Angle)$ABC_equal_DEF.firstItem).pointThree)) && ($CDE.isAPoint(((Angle)$ABC_equal_DEF.secondItem).pointOne) && $CDE.isAPoint(((Angle)$ABC_equal_DEF.secondItem).middle) && $CDE.isAPoint(((Angle)$ABC_equal_DEF.secondItem).pointThree)) || 
+      		($CDE.isAPoint(((Angle)$ABC_equal_DEF.firstItem).pointOne) && $CDE.isAPoint(((Angle)$ABC_equal_DEF.firstItem).middle) && $CDE.isAPoint(((Angle)$ABC_equal_DEF.firstItem).pointThree)) && ($ABC.isAPoint(((Angle)$ABC_equal_DEF.secondItem).pointOne) && $ABC.isAPoint(((Angle)$ABC_equal_DEF.secondItem).middle) && $ABC.isAPoint(((Angle)$ABC_equal_DEF.secondItem).pointThree)) 
+      	)
+      	//equalline contain onesite each angle
+      	eval( (((Angle)$ABC_equal_DEF.firstItem).directionLeft.sameItem(((Line) $AB_equal_DE.firstItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionLeft.sameItem(((Line) $AB_equal_DE.secondItem)))
+			||(((Angle)$ABC_equal_DEF.firstItem).directionRight.sameItem(((Line) $AB_equal_DE.firstItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionRight.sameItem(((Line) $AB_equal_DE.secondItem)))
+			||(((Angle)$ABC_equal_DEF.firstItem).directionLeft.sameItem(((Line) $AB_equal_DE.secondItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionLeft.sameItem(((Line) $AB_equal_DE.firstItem)))
+			||(((Angle)$ABC_equal_DEF.firstItem).directionRight.sameItem(((Line) $AB_equal_DE.secondItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionRight.sameItem(((Line) $AB_equal_DE.firstItem)))
+			     	
+      	)
+      	eval( (((Angle)$ABC_equal_DEF.firstItem).directionLeft.sameItem(((Line) $BC_equal_EF.firstItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionLeft.sameItem(((Line) $BC_equal_EF.secondItem)))
+			||(((Angle)$ABC_equal_DEF.firstItem).directionRight.sameItem(((Line) $BC_equal_EF.firstItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionRight.sameItem(((Line) $BC_equal_EF.secondItem)))
+			||(((Angle)$ABC_equal_DEF.firstItem).directionLeft.sameItem(((Line) $BC_equal_EF.secondItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionLeft.sameItem(((Line) $BC_equal_EF.firstItem)))
+			||(((Angle)$ABC_equal_DEF.firstItem).directionRight.sameItem(((Line) $BC_equal_EF.secondItem)) && ((Angle)$ABC_equal_DEF.secondItem).directionRight.sameItem(((Line) $BC_equal_EF.firstItem)))
+			     	
+      	)
+		//
+    then
+    	Log.logger.info("Theorem5");
+        //System.out.println("Theorem5");
+        GeoRelation ABCconqCDE = new GeoRelation($ABC, $CDE, Relation.CONGRUENT);
+        //CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ABCconqCDE);
+
+end
+
+

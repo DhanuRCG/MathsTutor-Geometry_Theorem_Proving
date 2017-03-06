@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<problem>
+	<type>GeoProof</type>
+	<sectionid>1</sectionid>
+	<question id="q01">
+		<figure>
+			<construction>
+				<elements>
+					<point id="A" />
+					<point id="B" />
+					<point id="C" />
+					<point id="D" />
+					<point id="E" />
+					<point id="F" />
+					<point id="O" />
+
+					<line id="AB" />
+					<line id="BC" />
+					<line id="AC" />
+					<line id="BD" />
+					<line id="AD" />
+					<line id="BF" />
+					<line id="BO" />
+					<line id="FO" />
+					<line id="CF" />
+					<line id="CO" />
+					<line id="CE" />
+					<line id="DF" />
+					<line id="DO" />
+					<line id="DE" />
+					<line id="EO" />
+					
+					<angle id="ABC" />
+					<angle id="ABF" />
+					<angle id="ABO" />
+					<angle id="DBF" />
+					<angle id="DBO" />
+					<angle id="DBC" />					
+					<angle id="EAB" />
+					<angle id="EAD" />
+					<angle id="CAD" />
+					<angle id="CAB" />				
+					<angle id="BCA" />
+					<angle id="FCA" />
+					<angle id="OCA" />				
+					<angle id="FDB" />
+					<angle id="BFD" />				
+					<angle id="ODF" />
+					<angle id="EDF" />					
+					<angle id="DFO" />
+					<angle id="DFC" />					
+					<angle id="BOD" />
+					<angle id="FOD" />				
+					<angle id="ADO" />
+					<angle id="ADE" />					
+					<angle id="DOC" />					
+					<angle id="EOB" />
+					<angle id="EOF" />					
+					<angle id="COE" />					
+					<angle id="OEC" />
+					<angle id="DEC" />
+					<angle id="OEA" />
+					<angle id="DEA" />					
+					<angle id="ECO" />
+					<angle id="ECF" />
+					<angle id="ECB" />					
+					<angle id="EDB" />
+					<angle id="ODB" />
+					<angle id="ADF" />
+					
+					<triangle id="ACB" />
+					<triangle id="DFB" />
+					<triangle id="DOB" />
+					<triangle id="DOF" />
+					<triangle id="CEO" />
+					<triangle id="AED" />
+					
+				</elements>
+				<constraints>
+					<free_point>
+						<point out="true">A</point>
+					</free_point>
+					<free_point>
+						<point out="true">B</point>
+					</free_point>
+					<free_point>
+						<point out="true">C</point>
+					</free_point>
+					<free_point>
+						<point out="true">D</point>
+					</free_point>
+					<free_point>
+						<point out="true">E</point>
+					</free_point>
+					<free_point>
+						<point out="true">F</point>
+					</free_point>
+					<free_point>
+						<point out="true">O</point>
+					</free_point>
+					<point_on_line_segment>
+						<point id="F" />
+						<line id="BC" />
+					</point_on_line_segment>
+					<point_on_line_segment>
+						<point id="F" />
+						<line id="BO" />
+					</point_on_line_segment>
+					<point_on_line_segment>
+						<point id="O" />
+						<line id="BC" />
+					</point_on_line_segment>
+					<point_on_line_segment>
+						<point id="O" />
+						<line id="CF" />
+					</point_on_line_segment>
+					<point_on_line_segment>
+						<point id="O" />
+						<line id="DE" />
+					</point_on_line_segment>
+					<point_on_line_segment>
+						<point id="C" />
+						<line id="AE" />
+					</point_on_line_segment>
+					<midpoint_of_line_segment>
+						<point id="D" />
+						<line id="AB" />
+					</midpoint_of_line_segment>
+					<two_parallel_line_segments>
+						<line id="AC" />
+						<line id="DF" />
+					</two_parallel_line_segments>
+					<two_equal_line_segments>
+						<line id="AB" />
+						<line id="AC" />
+					</two_equal_line_segments>
+					<two_equal_line_segments>
+						<line id="BD" />
+						<line id="CE" />
+					</two_equal_line_segments>
+				</constraints>
+			</construction>
+		</figure>
+		<subQuestion id="01" isProof="true">
+			<geoRelation type="equals">
+				<geoItem type="angle" id="DBF"></geoItem>
+				<geoItem type="angle" id="DFB"></geoItem>
+			</geoRelation>
+		</subQuestion>
+		<subQuestion id="02" isProof="true">
+			<geoRelation type="congruent">
+				<geoItem type="triangle" id="DFO"></geoItem>
+				<geoItem type="triangle" id="ECO"></geoItem>
+			</geoRelation>
+		</subQuestion>
+		<subQuestion id="03" isProof="true">
+			<geoRelation type="algebraic_expression">
+				<geoItem type="line" id="OC"></geoItem>
+				<mo>=</mo>
+				<geoItem type="line" id="BC"></geoItem>
+				<mo>/</mo>
+				<mn>4</mn>
+			</geoRelation>
+		</subQuestion>
+		<subQuestion id="04" isProof="true">
+			<geoItem type="parallelogram" id="DFEC"></geoItem>
+		</subQuestion>
+	</question>
+</problem>
+

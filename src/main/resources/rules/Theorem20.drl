@@ -1,0 +1,80 @@
+	
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.test.Log;
+import com.geometry.FactorGeoRelation;
+//Midpoint Theorem
+rule "Theorem 20"
+
+    when
+    //getting triangle
+    $ABC : Triangle()
+    
+    // mid point on AB line
+    $ABonD : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+     //mid point on BC line
+    $BConE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+       // D is mid point in AB
+    $ADDB  : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+    	// E is mid point in BC
+    $BEEC  : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+       //identified two different relation which is point on line
+     eval(!$ABonD.firstItem.sameItem($BConE.firstItem) && !$ABonD.secondItem.sameItem($BConE.secondItem) )
+       
+       // identified two difference relation which is two line equal ant in a two relation have 4 diffrent line
+       eval(!$ADDB.firstItem.sameItem($BEEC.firstItem ) && !$ADDB.secondItem.sameItem($BEEC.secondItem ))
+       eval(!$ADDB.firstItem.sameItem($BEEC.secondItem ) && !$ADDB.secondItem.sameItem($BEEC.firstItem ))
+       //ADDB relation have two line that have a common point
+       eval((((Line)$ADDB.firstItem).isAPoint(((Line)$ADDB.secondItem).endPoints[0]) )||(((Line)$ADDB.firstItem).isAPoint(((Line)$ADDB.secondItem).endPoints[1]) ))
+       //BEEC relation have two line that have a common point
+       eval((((Line)$BEEC.firstItem).isAPoint(((Line)$BEEC.secondItem).endPoints[0]) )||(((Line)$BEEC.firstItem).isAPoint(((Line)$BEEC.secondItem).endPoints[1]) ))
+       //check two equal line along one line
+       eval(((Line)$ADDB.firstItem).isAPoint((Point)$ABonD.secondItem) && ((Line)$ADDB.secondItem).isAPoint((Point)$ABonD.secondItem))
+       eval(((Line)$BEEC.firstItem).isAPoint((Point)$BConE.secondItem) && ((Line)$BEEC.secondItem).isAPoint((Point)$BConE.secondItem))
+       // now we fint line that contain mid point now we have to find thal line is line in triangle
+        eval($ABC.isAPoint(((Line)$ABonD.firstItem).endPoints[0]) && $ABC.isAPoint(((Line)$ABonD.firstItem).endPoints[1]))
+        eval($ABC.isAPoint(((Line)$BConE.firstItem).endPoints[0]) && $ABC.isAPoint(((Line)$BConE.firstItem).endPoints[1]))
+        //conditions
+        
+    then
+    	Point D= (Point)($ABonD.secondItem);
+    	Point E= (Point)($BConE.secondItem);
+    	Line DE=new Line(D,E);
+    	Line AB=(Line)($ABonD.firstItem);
+    	Line BC=(Line)($BConE.firstItem);
+    	//problem insert AC CA
+    	Point A;
+    	Point C;
+    	if(AB.endPoints[0].sameItem(BC.endPoints[0])){
+    		A=AB.endPoints[1];C=BC.endPoints[1];
+    	}
+    	else if(AB.endPoints[0].sameItem(BC.endPoints[1])){
+    		A=AB.endPoints[1];C=BC.endPoints[0];
+    	}
+    	else if(AB.endPoints[1].sameItem(BC.endPoints[0])){
+    		A=AB.endPoints[0];C=BC.endPoints[1];
+    	}
+    	else{
+    		A=AB.endPoints[0];C=BC.endPoints[0];
+    	}
+    	Line AC=new Line(A,C);
+    	//insert(new GeoRelation(DE,AC,Relation.PARALLEL_LINES));
+    	//Relation.TWICE should change
+    	//insert(new GeoRelation(DE,AC,Relation.TWICE));
+        //actions
+        Log.logger.info("Theorem20");
+		FactorGeoRelation fact = new FactorGeoRelation(AC,DE,Relation.EQUALS,"1/2");
+		GeoRelation DEparaAC = new GeoRelation(DE,AC,Relation.PARALLEL_LINES); 
+end
+
+

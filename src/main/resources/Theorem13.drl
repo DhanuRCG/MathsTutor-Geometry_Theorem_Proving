@@ -1,0 +1,43 @@
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Theorem13"
+
+    when
+        //conditions
+        //There should be a traingle
+        $ABC : Triangle();
+        
+        //There should be two equal angles
+        $ABCequalBAC : GeoRelation(this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS);
+    	
+    	//The triangle should contain these two angles
+    	eval($ABC.isAnAngle(((Angle)$ABCequalBAC.firstItem)))
+    	eval($ABC.isAnAngle(((Angle)$ABCequalBAC.secondItem)))
+    	
+    then
+        //actions
+        Line AC = $ABC.getOppositeSide(((Angle)$ABCequalBAC.firstItem));
+        Line BC = $ABC.getOppositeSide(((Angle)$ABCequalBAC.secondItem));
+        
+        GeoRelation ACeqBC = new GeoRelation(AC,BC,Relation.EQUALS);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ACeqBC );
+		CheckingEngine.reasonHolder.addReason(ACeqBC,"∠"+((Angle)$ABCequalBAC.firstItem).getName() +" = ∠"+((Angle)$ABCequalBAC.secondItem));
+		CheckingEngine.reasonHolder.addReason(ACeqBC,"සමද්වීපාද ත්‍රිකෝණයේ  සමාන කෝණ වලට අනුරූප පාද සමානවේ.");
+        Log.logger.info("Theorem 13 - " + $ABCequalBAC.getName()+" --> "+ACeqBC.getName());
+        CheckingEngine.graph.addNode(ACeqBC,"සමද්වීපාද ත්‍රිකෝණයේ  සමාන කෝණ වලට අනුරූප පාද සමානවේ.", $ABCequalBAC);
+        
+        
+end

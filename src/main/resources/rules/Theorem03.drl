@@ -1,0 +1,118 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+
+//declare any global variables here
+
+//Corresponding Angles between parallel lines are equal
+rule "Theorem 3.1"
+
+    when
+    	//two paralleline
+     	ABparaCD : GeoRelation(this.relation == Relation.PARALLEL_LINES)
+    	//line
+     	$BD : Line()
+     	$DE : Line()
+     	eval(!$BD.sameItem($DE))
+   	 	//two angle
+   	 	$ABD : Angle()
+   	 	$BDC : Angle()
+   	 	eval(!$ABD.sameItem($BDC))
+   	 	
+   	 	eval(($ABD.directionRight.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionRight.sameItem(((Line)ABparaCD.secondItem)))
+   	 	|| ($ABD.directionLeft.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionLeft.sameItem(((Line)ABparaCD.secondItem))))
+   	 	
+   	 	//two differetn line
+   	 	$BEonD : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	
+   	 	//BD AND DE is is a line//
+   	 	eval($BD.isAPoint((Point)$BEonD.secondItem ))
+   	 	eval($DE.isAPoint((Point)$BEonD.secondItem ))
+   	 	eval(((Line)$BEonD.firstItem).isAPoint($BD.endPoints[0]) || ((Line)$BEonD.firstItem).isAPoint($BD.endPoints[1]))
+   	 	eval(((Line)$BEonD.firstItem).isAPoint($DE.endPoints[0]) || ((Line)$BEonD.firstItem).isAPoint($DE.endPoints[1]))
+   	 	eval( 
+   	 	($ABD.directionLeft.sameItem($BD) && $BDC.directionLeft.sameItem($DE) && $ABD.directionRight.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionRight.sameItem(((Line)ABparaCD.secondItem)))
+   	 	||
+   	 	($ABD.directionRight.sameItem($BD) && $BDC.directionRight.sameItem($DE) && $ABD.directionLeft.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionLeft.sameItem(((Line)ABparaCD.secondItem)))
+   	 	)
+   	 
+    then
+    	GeoRelation corAngles = new GeoRelation($ABD, $BDC, Relation.EQUALS);
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(corAngles);
+    	Log.logger.info("Theorem 3.1");
+		Log.logger.info(ABparaCD.getName()+" : "+$ABD.getName()+" = "+$BDC.getName()+" Corresponding Angles");
+end
+
+//Theorem 3.2 
+rule " alternate angles between parallel lines are equal"
+    when
+    	//two paralleline
+     $ABparaCD : GeoRelation(this.relation==Relation.PARALLEL_LINES && $AB : ((Line)this.firstItem) && $CD : ((Line)this.secondItem))
+     
+     eval(!($AB.isAPoint($CD.endPoints[0]) || $AB.isAPoint($CD.endPoints[1])))	
+     
+    	//line
+     $BD : Line()
+   	 //two angle
+   	 $ABC : Angle()
+   	 $BCD : Angle()
+     //two angle not be a same item
+     eval(!$ABC.sameItem($BCD))
+    eval(($ABC.directionLeft.sameItem((Line)$ABparaCD.firstItem) && $BCD.directionLeft.sameItem((Line)$ABparaCD.secondItem) && $ABC.directionRight.sameItem($BD) && $BCD.directionRight.sameItem($BD) )
+    ||($ABC.directionRight.sameItem((Line)$ABparaCD.firstItem) && $BCD.directionRight.sameItem((Line)$ABparaCD.secondItem)  && $ABC.directionLeft.sameItem($BD) && $BCD.directionLeft.sameItem($BD) ) )
+    
+    then
+   	 GeoRelation ABCequalBCD = new GeoRelation($ABC, $BCD, Relation.EQUALS);
+   	 Log.logger.info("Theorem 3.2 : "+$ABparaCD.getName()+" --> "+$ABC.getName()+"=" +$BCD.getName());
+   	 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ABCequalBCD);
+
+end
+
+//theorem 3.3
+rule "friend angles between parallel line"
+
+    when
+    //two paralleline
+     $ABparaCD : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.PARALLEL_LINES )
+    	//line
+     $BD : Line()
+   	 //two angle
+   	 $ABD : Angle()
+   	 $BDC : Angle()
+   	 //line contain two angle
+   	 eval($ABD.isALine($BD))
+   	 eval($BDC.isALine($BD))
+   	 
+   	 eval(
+   	 		$ABD.directionLeft.sameItem(((Line)$ABparaCD.firstItem)) && $ABD.directionRight.sameItem($BD) && 
+   	 		$BDC.directionRight.sameItem(((Line)$ABparaCD.secondItem)) && $BDC.directionLeft.sameItem($BD) 
+   	 		
+   	 	)
+   	 
+    
+    then
+
+    	 //ExpressionRelation expresion=new ExpressionRelation(RelationType.EXPRESSION_RELATION);
+    	 
+    	 //Angle val=new Angle(180);
+    	 //expresion.addAllItems($ABD,$BDC,val);
+    	 //expresion.addAllOperations(Relation.PLUS,Relation.EQUALS);
+		 //insert(expresion); 
+		 //System.out.println($ABD+""+$BDC+" =180");
+        //System.out.println(expresion);
+        String log = $ABD.getName()+"+"+$BDC.getName()+" =180";
+        Log.logger.info(log);
+        
+end
+

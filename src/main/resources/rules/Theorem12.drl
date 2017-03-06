@@ -1,0 +1,47 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Theorem12"
+
+    when
+        //conditions
+        //triangle
+         $ABC : Triangle()
+         //two angle
+         $ABCang : Angle();
+         $ACBang : Angle();
+        
+         //two line equal
+         $AB_AC : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+    	//two different angle
+    	eval(!$ACBang.sameItem($ABCang ))
+    	//angle contain Triangle
+    	eval($ABC.isAnAngle($ACBang) && $ABC.isAnAngle($ABCang))
+    	//one line contain angle not two line
+    	eval($ABCang.isALine((Line)$AB_AC.firstItem))
+    	eval(!$ABCang.isALine((Line)$AB_AC.secondItem))
+    	eval($ACBang.isALine((Line)$AB_AC.secondItem))
+    	eval(!$ACBang.isALine((Line)$AB_AC.firstItem))
+    	//two line are different
+    	eval(!((Line)$AB_AC.firstItem).sameItem((Line)$AB_AC.secondItem))
+    	//two line contain triangle
+    	eval($ABC.isALine((Line)$AB_AC.firstItem) && $ABC.isALine((Line)$AB_AC.secondItem) )
+    then
+    	//System.out.println("Theorem12");
+    	Log.logger.info("Theorem12 - " +$ABCang.getName()+" = "+$ACBang.getName());
+		GeoRelation ACBeqABC = new GeoRelation($ABCang,$ACBang,Relation.EQUALS);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ACBeqABC );
+end

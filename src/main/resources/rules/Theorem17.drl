@@ -1,0 +1,50 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+
+rule "Thorem17"
+
+    when
+        //conditions
+        $ABCD : Quadrangle()
+        $ABCangleADC : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+        $BADangleBCD : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+   	
+   	//all angleshould be  contain quadragle
+    //ABC in quadeaangle
+    eval($ABCD.isAPoint(((Angle)$ABCangleADC.firstItem).pointOne) && $ABCD.isAPoint(((Angle)$ABCangleADC.firstItem).middle) && $ABCD.isAPoint(((Angle)$ABCangleADC.firstItem).pointThree))
+    //ABC in quadeaangle
+    eval($ABCD.isAPoint(((Angle)$ABCangleADC.secondItem).pointOne) && $ABCD.isAPoint(((Angle)$ABCangleADC.secondItem).middle) && $ABCD.isAPoint(((Angle)$ABCangleADC.secondItem).pointThree))
+    //ADC in quadeaangle
+    eval($ABCD.isAPoint(((Angle)$BADangleBCD.firstItem).pointOne) && $ABCD.isAPoint(((Angle)$BADangleBCD.firstItem).middle) && $ABCD.isAPoint(((Angle)$BADangleBCD.firstItem).pointThree))
+    //ABC in quadeaangle
+    eval($ABCD.isAPoint(((Angle)$BADangleBCD.secondItem).pointOne) && $ABCD.isAPoint(((Angle)$BADangleBCD.secondItem).middle) && $ABCD.isAPoint(((Angle)$BADangleBCD.secondItem).pointThree))
+    
+   	
+   	// ABC and CDA two anglehave common point except middlepoint
+   		eval((((Angle)$ABCangleADC.firstItem).pointOne.sameItem(((Angle)$ABCangleADC.secondItem).pointOne) && ((Angle)$ABCangleADC.firstItem).pointThree.sameItem(((Angle)$ABCangleADC.secondItem).pointThree)) ||(((Angle)$ABCangleADC.firstItem).pointOne.sameItem(((Angle)$ABCangleADC.secondItem).pointThree) && ((Angle)$ABCangleADC.firstItem).pointThree.sameItem(((Angle)$ABCangleADC.secondItem).pointOne)) )
+    	eval((((Angle)$BADangleBCD.firstItem).pointOne.sameItem(((Angle)$BADangleBCD.secondItem).pointOne) && ((Angle)$BADangleBCD.firstItem).pointThree.sameItem(((Angle)$BADangleBCD.secondItem).pointThree)) ||(((Angle)$BADangleBCD.firstItem).pointOne.sameItem(((Angle)$BADangleBCD.secondItem).pointThree) && ((Angle)$BADangleBCD.firstItem).pointThree.sameItem(((Angle)$BADangleBCD.secondItem).pointOne)) )
+    //ABCangleADC and BADangleBCD must be differen
+    eval(!((Angle)$ABCangleADC.firstItem).sameItem((Angle)$BADangleBCD.firstItem))
+    
+    then
+        //actions
+        $ABCD.isAParalleologram=true;
+       // insert($ABCD);
+	System.out.println("Theorem17");
+end
+
+

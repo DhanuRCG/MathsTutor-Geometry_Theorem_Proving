@@ -1,0 +1,62 @@
+//created on: Feb 3, 2017
+package com.ratio
+import com.geometry.*;
+//list any import classes here.
+
+
+
+//declare any global variables here
+
+
+
+
+rule "theorem28"
+
+    when
+        //conditions
+          //triangle
+         $ABC : Triangle()
+         
+        $ABonD : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	$AConE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	eval(!$ABonD.sameRelation($AConE))
+    	eval($ABC.isALine((Line)$ABonD.firstItem))
+    	eval($ABC.isALine((Line)$AConE.firstItem))
+    	
+    	$DE : Line()
+    	
+    	eval($DE.isAPoint((Point)$ABonD.secondItem))
+    	eval($DE.isAPoint((Point)$AConE.secondItem))
+    	$ADratioDBequalBEratioCE : RetioGeoRelation(this.firstItem.type == GeoType.LINE,this.secondItem.type == GeoType.LINE,this.relation==Relation.EQUALS,this.thirdItem.type == GeoType.LINE,this.fourthItem.type == GeoType.LINE)
+    	eval(((Line)$ADratioDBequalBEratioCE.firstItem).isAPoint((Point)$ABonD.secondItem))
+    	eval(((Line)$ADratioDBequalBEratioCE.secondItem).isAPoint((Point)$ABonD.secondItem))
+    	eval(((Line)$ADratioDBequalBEratioCE.thirdItem).isAPoint((Point)$AConE.secondItem))
+    	eval(((Line)$ADratioDBequalBEratioCE.fourthItem).isAPoint((Point)$AConE.secondItem))
+    	
+    	eval($ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.firstItem).endPoints[0]) ||$ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.firstItem).endPoints[1]) )
+    	
+    	
+    	eval($ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.secondItem).endPoints[0]) || $ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.firstItem).endPoints[1]))
+    	
+    	
+    	eval($ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.thirdItem).endPoints[0]) || $ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.firstItem).endPoints[1]))
+    	
+    	
+    	eval($ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.fourthItem).endPoints[0]) || $ABC.isAPoint(((Line)$ADratioDBequalBEratioCE.firstItem).endPoints[1]))
+    	
+    then
+        //actions
+        Line BC = null;
+        if((((Line)$ABonD.firstItem).isAPoint(((Line)$AConE.firstItem).endPoints[0]))){
+        	BC = $ABC.getOppositeSide(((Line)$AConE.firstItem).endPoints[0]);
+        }
+        else if((((Line)$ABonD.firstItem).isAPoint(((Line)$AConE.firstItem).endPoints[1]))){
+        	BC = $ABC.getOppositeSide(((Line)$AConE.firstItem).endPoints[1]);
+        }
+        
+          GeoRelation BCparaXY = new GeoRelation($DE,BC,Relation.PARALLEL_LINES);
+         System.out.println("Theorem 28");
+
+end
+
+

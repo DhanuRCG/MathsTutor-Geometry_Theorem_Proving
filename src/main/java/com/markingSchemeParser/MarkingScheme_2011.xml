@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<markingScheme>
+	<type>GeoProof</type>
+	<sectionid>1</sectionid>
+	<question id="q01" totalMarks="10">
+		<subQuestion id="01" totalMarks="1" isProof="false">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="02" totalMarks="2" isProof="false">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+					<step>
+						<phrase>ත්‍රිකෝණයක පාද දෙකක මධ්‍ය ලක්ෂ්‍ය යා කරන රේඛාව ඉතිරි පාදයට
+							සමාන්තර වන අතර ඉන් හරි අඩක් වේ.
+						</phrase>
+					</step>
+				</markBlock>
+			</markSet>
+			<markSet id="2">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="1">
+					<step>
+						<phrase>මධ්‍ය ලක්ෂ්‍ය ප්‍රමේයය</phrase>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="03" totalMarks="2" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step>
+						<phrase>ABF හා DFG ත්‍රිකෝණ දෙකේ,</phrase>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="0" reasonReuired="true">
+						<expression required="true" mark="0">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AF</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>FD</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>AD හි මධ්‍ය ලක්ෂ්‍යය F බැවින්</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>ABF</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>DGF</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ඒකාන්තර කෝණ</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>BAF</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>FDG</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ඒකාන්තර කෝණ</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>AFB</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>DFG</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ප්‍රතිමුඛ කෝණ</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="0" reasonReuired="false">
+						<expression required="true" mark="0">
+							<geoRelation type="congruent">
+								<geoItem type="triangle">
+									<name>ABF</name>
+								</geoItem>
+								<geoItem type="triangle">
+									<name>DGF</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>කෝ.කෝ.පා.</phrase>
+						</reason>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="04" totalMarks="2" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AF</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>FD</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>දත්තය</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>BF</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>FG</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ත්‍රිකෝණ අංගසම බැවින්</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step>
+						<phrase>විකර්ණ සමච්චේදනය වන බැවින් ABDG සමන්තරාශ්‍රයකි.</phrase>
+					</step>
+				</markBlock>
+			</markSet>
+			<markSet id="2">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="parallel_lines">
+								<geoItem type="line">
+									<name>AB</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>DG</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>මධ්‍ය ලක්ෂ්‍ය ප්‍රමේයය</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AB</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>DG</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ත්‍රිකෝණ අංගසම බැවින්</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step>
+						<phrase>සම්මුඛ පාද යුගලක් සමාන හා සමාන්තර නිසා ABDG
+							සමන්තරාශ්‍රයකි.
+						</phrase>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="05" totalMarks="1" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="parallel_lines">
+								<geoItem type="line">
+									<name>FE</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>DC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ADC ත්‍රිකෝණයේ F හා E මධ්‍ය ලක්ෂ්‍ය බැවින්</phrase>
+						</reason>
+					</step>
+					<step>
+						<phrase>BGD ත්‍රිකෝණයේ,</phrase>
+					</step>
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="parallel_lines">
+								<geoItem type="line">
+									<name>FE</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>BD</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+					<step>
+						<phrase>නමුත් F යනු BG හි මධ්‍ය ලක්ෂ්‍යය වේ.</phrase>
+					</step>
+					<step>
+						<phrase>එබැවින් මධ්‍ය ලක්ෂ්‍ය ප්‍රමේයයේ විලෝමයට අනුව, E යනු DG හි
+							මාධ්‍ය ලක්ෂ්‍යය වේ.
+						</phrase>
+					</step>
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>DE</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>EG</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="06" totalMarks="2" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="triangle">
+									<name>AGB</name>
+								</geoItem>
+								<geoItem type="triangle">
+									<name>ABD</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>එකම ආධාරකය හා සමාන්තර රේඛා අතර ත්‍රිකෝණ</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="triangle">
+									<name>ABD</name>
+								</geoItem>
+								<geoItem type="triangle">
+									<name>ADC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>BD=DC හා පොදු ශීර්ෂය</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="0" reasonReuired="false">
+						<expression required="true" mark="0">
+							<geoRelation type="equals">
+								<geoItem type="triangle">
+									<name>ABG</name>
+								</geoItem>
+								<geoItem type="triangle">
+									<name>ADC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+	</question>
+</markingScheme>

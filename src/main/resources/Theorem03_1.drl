@@ -1,0 +1,60 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+
+//declare any global variables here
+
+//Corresponding Angles between parallel lines are equal
+rule "Theorem 3.1"
+
+    when
+    	//two paralleline
+     	ABparaCD : GeoRelation(this.relation == Relation.PARALLEL_LINES)
+    	//line
+     	$BD : Line()
+     	$DE : Line()
+     	eval(!$BD.sameItem($DE))
+   	 	//two angle
+   	 	$ABD : Angle()
+   	 	$BDC : Angle()
+   	 	eval(!$ABD.sameItem($BDC))
+   	 	
+   	 	eval(($ABD.directionRight.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionRight.sameItem(((Line)ABparaCD.secondItem)))
+   	 	|| ($ABD.directionLeft.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionLeft.sameItem(((Line)ABparaCD.secondItem))))
+   	 	
+   	 	//two differetn line
+   	 	$BEonD : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	
+   	 	//BD AND DE is is a line//
+   	 	eval($BD.isAPoint((Point)$BEonD.secondItem ))
+   	 	eval($DE.isAPoint((Point)$BEonD.secondItem ))
+   	 	eval(((Line)$BEonD.firstItem).isAPoint($BD.endPoints[0]) || ((Line)$BEonD.firstItem).isAPoint($BD.endPoints[1]))
+   	 	eval(((Line)$BEonD.firstItem).isAPoint($DE.endPoints[0]) || ((Line)$BEonD.firstItem).isAPoint($DE.endPoints[1]))
+   	 	eval( 
+   	 	($ABD.directionLeft.sameItem($BD) && $BDC.directionLeft.sameItem($DE) && $ABD.directionRight.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionRight.sameItem(((Line)ABparaCD.secondItem)))
+   	 	||
+   	 	($ABD.directionRight.sameItem($BD) && $BDC.directionRight.sameItem($DE) && $ABD.directionLeft.sameItem(((Line)ABparaCD.firstItem)) && $BDC.directionLeft.sameItem(((Line)ABparaCD.secondItem)))
+   	 	)
+   	 	eval(((Line)ABparaCD.firstItem).isAPoint((Point)$BEonD.secondItem) || ((Line)ABparaCD.secondItem).isAPoint((Point)$BEonD.secondItem))
+    then
+    	GeoRelation corAngles = new GeoRelation($ABD, $BDC, Relation.EQUALS);
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(corAngles);
+    	CheckingEngine.reasonHolder.addReason(corAngles,"අනුරූප කෝණ");
+		Log.logger.info("Theorem 3_1 : " +ABparaCD.getName()+" --> "+corAngles.getName());
+    	Log.logger.info(ABparaCD.getName()+" : "+$ABD.getName()+" = "+$BDC.getName()+" Corresponding Angles");
+	   	CheckingEngine.graph.addNode(corAngles,"අනුරූප කෝණ", ABparaCD);
+	   	insert(corAngles);
+   		
+end
+

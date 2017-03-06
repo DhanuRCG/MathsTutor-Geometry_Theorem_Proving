@@ -1,0 +1,70 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+
+
+
+rule "theorem7"
+
+    when
+        //conditions
+     //getting triangle
+    $ABC :Triangle()
+    //get another triangle
+    $DEF: Triangle()
+  
+    
+    //equals line relation from two angle
+    $AB_PQ : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+    $BC_QR : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+    $AC_PR : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+      //two different triangle
+      eval(!$ABC.sameItem($DEF))
+      //3 different line relation
+      eval(!((Line)$AB_PQ.firstItem).sameItem((Line)$AB_PQ.secondItem))
+      eval(!((Line)$AB_PQ.firstItem).sameItem((Line)$BC_QR.firstItem))
+      eval(!((Line)$AB_PQ.firstItem).sameItem((Line)$BC_QR.secondItem))
+      eval(!((Line)$AB_PQ.firstItem).sameItem((Line)$AC_PR.firstItem))
+      eval(!((Line)$AB_PQ.firstItem).sameItem((Line)$AC_PR.secondItem))
+      
+      eval(!((Line)$AB_PQ.secondItem).sameItem((Line)$BC_QR.firstItem))
+      eval(!((Line)$AB_PQ.secondItem).sameItem((Line)$BC_QR.secondItem))
+      eval(!((Line)$AB_PQ.secondItem).sameItem((Line)$AC_PR.firstItem))
+      eval(!((Line)$AB_PQ.secondItem).sameItem((Line)$AC_PR.secondItem))
+      
+      eval(!((Line)$BC_QR.firstItem).sameItem((Line)$BC_QR.secondItem))
+      eval(!((Line)$BC_QR.firstItem).sameItem((Line)$AC_PR.firstItem))
+      eval(!((Line)$BC_QR.firstItem).sameItem((Line)$AC_PR.secondItem))
+      
+      eval(!((Line)$BC_QR.secondItem).sameItem((Line)$AC_PR.firstItem))
+      eval(!((Line)$BC_QR.secondItem).sameItem((Line)$AC_PR.secondItem))
+      
+      eval(!((Line)$AC_PR.firstItem).sameItem((Line)$AC_PR.secondItem))
+      
+    //linew contain triangle
+    eval( ($ABC.isALine(((Line)$AB_PQ.firstItem)) && $DEF.isALine(((Line)$AB_PQ.secondItem))) || ($DEF.isALine(((Line)$AB_PQ.firstItem)) && $ABC.isALine(((Line)$AB_PQ.secondItem))))
+    eval(($ABC.isALine(((Line)$AC_PR.firstItem)) && $DEF.isALine(((Line)$AC_PR.secondItem))) || ($DEF.isALine(((Line)$AC_PR.firstItem)) && $ABC.isALine(((Line)$AC_PR.secondItem))) )
+    eval((($ABC.isALine(((Line)$BC_QR.firstItem)) && $DEF.isALine(((Line)$BC_QR.secondItem))))|| (($DEF.isALine(((Line)$BC_QR.firstItem)) && $ABC.isALine(((Line)$BC_QR.secondItem)))) )
+    then
+        //actions
+       	System.out.println("papapa");
+       	System.out.println("Theorem7");
+       	GeoRelation ABCconqDEF = new GeoRelation($ABC, $DEF, Relation.CONGRUENT);
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ABCconqDEF);
+	
+
+end
+

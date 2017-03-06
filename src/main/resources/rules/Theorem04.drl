@@ -1,0 +1,148 @@
+//list any import classes here.
+
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.test.Log;
+//declare any global variables here
+
+rule "alternative identified parallline"
+
+    when
+    	
+        //conditions
+        //two angle equal relation
+        $ABCequalBCD : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+        //different two angle
+        eval(!((Angle)$ABCequalBCD.firstItem).sameItem(((Angle)$ABCequalBCD.secondItem)))
+        eval(((Angle)$ABCequalBCD.firstItem).directionLeft.sameItem(((Angle)$ABCequalBCD.secondItem).directionLeft) || ((Angle)$ABCequalBCD.firstItem).directionRight.sameItem(((Angle)$ABCequalBCD.secondItem).directionRight))
+        
+    then
+        //actions
+        GeoRelation online4;
+        if(((Angle)$ABCequalBCD.firstItem).directionLeft.sameItem(((Angle)$ABCequalBCD.secondItem).directionLeft) ){
+        	online4=new GeoRelation(((Angle)$ABCequalBCD.firstItem).directionRight, ((Angle)$ABCequalBCD.secondItem).directionRight, Relation.PARALLEL_LINES);
+	        	
+        }
+        if(((Angle)$ABCequalBCD.firstItem).directionRight.sameItem(((Angle)$ABCequalBCD.secondItem).directionRight) ){
+        	online4=new GeoRelation(((Angle)$ABCequalBCD.firstItem).directionLeft, ((Angle)$ABCequalBCD.secondItem).directionLeft, Relation.PARALLEL_LINES);
+	        	
+        }
+        //System.out.println("Theorem4 alternative angle");
+		Log.logger.info("Theorem4 alternative angle");
+end
+rule "friends angle parallline"
+
+    when
+    	
+        //conditions
+        //two angle equal relation
+        $ABCequalBCD : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+        //different two angle
+        eval(!((Angle)$ABCequalBCD.firstItem).sameItem(((Angle)$ABCequalBCD.secondItem)))
+        eval(((Angle)$ABCequalBCD.firstItem).directionLeft.sameItem(((Angle)$ABCequalBCD.secondItem).directionRight) || ((Angle)$ABCequalBCD.firstItem).directionRight.sameItem(((Angle)$ABCequalBCD.secondItem).directionLeft))
+        
+    then
+        //actions
+        GeoRelation online4;
+        if(((Angle)$ABCequalBCD.firstItem).directionLeft.sameItem(((Angle)$ABCequalBCD.secondItem).directionRight) ){
+        	online4=new GeoRelation(((Angle)$ABCequalBCD.firstItem).directionRight, ((Angle)$ABCequalBCD.secondItem).directionLeft, Relation.PARALLEL_LINES);
+	        	
+        }
+        if(((Angle)$ABCequalBCD.firstItem).directionRight.sameItem(((Angle)$ABCequalBCD.secondItem).directionLeft) ){
+        	online4=new GeoRelation(((Angle)$ABCequalBCD.firstItem).directionLeft, ((Angle)$ABCequalBCD.secondItem).directionRight, Relation.PARALLEL_LINES);
+	        	
+        }
+        //System.out.println("Theorem4 friends angle");
+		Log.logger.info("Theorem4 friend angle");
+end
+rule "consecutive angle parallline"
+
+    when
+    	
+        //conditions
+        //two angle equal relation
+        $ABCequalBCE : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS )
+        
+        $BEonC : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	
+        //different two angle
+        eval(!((Angle)$ABCequalBCE.firstItem).sameItem(((Angle)$ABCequalBCE.secondItem)))
+        //checking BEon c contain one side of two angle
+        eval((
+        
+        ((((Angle)$ABCequalBCE.firstItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.firstItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.firstItem).directionLeft.isAPoint(((Point)$BEonC.secondItem)))
+        &&
+        
+        ((((Angle)$ABCequalBCE.secondItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.secondItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.secondItem).directionLeft.isAPoint(((Point)$BEonC.secondItem)))
+        )
+        ||
+        (
+        
+        ((((Angle)$ABCequalBCE.firstItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.firstItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.firstItem).directionRight.isAPoint(((Point)$BEonC.secondItem)))
+        &&
+        
+        ((((Angle)$ABCequalBCE.secondItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.secondItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.secondItem).directionRight.isAPoint(((Point)$BEonC.secondItem)))
+        )
+        
+        )
+    then
+        //actions
+        GeoRelation online4;
+       if((
+        
+        ((((Angle)$ABCequalBCE.firstItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.firstItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.firstItem).directionLeft.isAPoint(((Point)$BEonC.secondItem)))
+        &&
+        
+        ((((Angle)$ABCequalBCE.secondItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.secondItem).directionLeft.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.secondItem).directionLeft.isAPoint(((Point)$BEonC.secondItem)))
+        )){
+        
+        online4=new GeoRelation(((Angle)$ABCequalBCE.firstItem).directionRight, ((Angle)$ABCequalBCE.secondItem).directionRight, Relation.PARALLEL_LINES);
+	       
+       }
+       if((((((Angle)$ABCequalBCE.firstItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.firstItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.firstItem).directionRight.isAPoint(((Point)$BEonC.secondItem)))
+        &&
+        
+        ((((Angle)$ABCequalBCE.secondItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[0])|| 
+        ((Angle)$ABCequalBCE.secondItem).directionRight.isAPoint(((Line)$BEonC.firstItem).endPoints[1]) )
+        && 
+        ((Angle)$ABCequalBCE.secondItem).directionRight.isAPoint(((Point)$BEonC.secondItem)))
+        )){
+        
+        online4=new GeoRelation(((Angle)$ABCequalBCE.firstItem).directionLeft, ((Angle)$ABCequalBCE.secondItem).directionLeft, Relation.PARALLEL_LINES);
+	       
+       }
+        //System.out.println("Theorem4 consecutive angle");
+		Log.logger.info("Theorem4 consecutive angle");
+end
+

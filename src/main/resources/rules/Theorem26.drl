@@ -1,0 +1,30 @@
+//created on: Feb 3, 2017
+package com.ratio
+
+//list any import classes here.
+
+
+import com.geometry.*;
+//declare any global variables here
+
+
+
+
+rule "Theorem26"
+
+    when
+        //conditions
+        $ABC : Triangle()
+        $abc : Angle(value == 90)
+        eval($ABC.isAnAngle($abc))
+    then
+        //actions
+        Line AB =$abc.directionLeft;
+        Line BC = $abc.directionRight;
+        Line AC =  $ABC.getOppositeSide($abc);
+        PythagorasGeoRelation relataion = new PythagorasGeoRelation(AC,AB,AC,RelationType.PYTHAGORAS);
+         System.out.println("Theorem 26");
+
+end
+
+

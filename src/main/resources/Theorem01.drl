@@ -1,0 +1,111 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.geometry.*;
+import com.test.Log;
+import com.engine.CheckingEngine;
+
+//"sum of adjacent angles on a line is 180 degrees"
+rule "Theorem1.1"
+
+    when
+        //There should be a point on a line	
+		$G1 :GeoRelation( 
+					this.firstItem.type == GeoType.LINE,
+    				 
+    				this. secondItem.type == GeoType.POINT,
+    				 
+    				this.relation == Relation.ON_THE_LINE , 
+    				
+    				$lineAB : ((Line)firstItem) ,
+    				 
+    				 $pointC : ((Point)secondItem)
+    				)
+    
+    	//There should be a different line which has pointC as one end
+    	$lineCD :  Line()
+    	eval($lineCD.isAPoint($pointC))
+    	//Other end should not be end point of Line AB
+    	eval(!$lineCD.isAPoint($lineAB.endPoints[0]))	
+    	eval(!$lineCD.isAPoint($lineAB.endPoints[1]))
+    	
+    	$ACD : Angle()
+    	eval($ACD.isMiddlePoint($pointC.name)) && eval($ACD.isACornerPoint($lineAB.endPoints[0].name))
+    	
+    	$BCD : Angle()
+    	eval($BCD.isMiddlePoint($pointC.name)) && eval($BCD.isACornerPoint($lineAB.endPoints[1].name))
+    	
+    then
+        //actions
+       
+	    AdjacentAnglesOnALineRelation rel = new AdjacentAnglesOnALineRelation($ACD,$BCD);
+	    
+	    //AdjacentAnglesOnALineRelation rel = new AdjacentAnglesOnALineRelation()
+	    //insert into TransitionKnowledgeHolder
+	    CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(rel);
+	    CheckingEngine.graph.addNode(rel);
+	    System.out.println("Theorem1_1"+rel.getName());
+	    Log.logger.info("Theorem1.1");
+	    
+
+end
+
+
+rule "Theorem1.2"
+
+     when
+        //There should be a point on a line	
+		$G1 :GeoRelation( 
+					this.firstItem.type == GeoType.LINE,
+    				 
+    				this. secondItem.type == GeoType.POINT,
+    				 
+    				this.relation == Relation.ON_THE_LINE , 
+    				
+    				$lineAB : ((Line)firstItem) ,
+    				 
+    				 $pointC : ((Point)secondItem)
+    				)
+    
+    	//There should be a different line which has pointC as one end
+    	$lineCD :  Line()
+    	eval($lineCD.isAPoint($pointC))
+    	//Other end should not be end point of Line AB
+    	eval(!$lineCD.isAPoint($lineAB.endPoints[0]))	
+    	eval(!$lineCD.isAPoint($lineAB.endPoints[1]))
+    	
+    	$ACD : Angle()
+    	eval($ACD.isMiddlePoint($pointC.name)) && eval($ACD.isACornerPoint($lineAB.endPoints[0].name))
+    	
+    	$BCD : Angle()
+    	eval($BCD.isMiddlePoint($pointC.name)) && eval($BCD.isACornerPoint($lineAB.endPoints[1].name))
+    	$abc_and_cbd : AdjacentAnglesOnALineRelation(relationType == RelationType.ADJACENT_ANGLES_ON_A_LINE_RELATION,relation == Relation.EQUALS, firstItem.type == GeoType.ANGLE, secondItem.type == GeoType.ANGLE, $abc1 : ((Angle)firstItem) , $cbd1 : ((Angle)secondItem))
+		
+	    $abc_eq_90 : GeoRelation(relationType == RelationType.VALUE_GEO_RELATION,relation == Relation.EQUALS, firstItem.type == GeoType.ANGLE, secondItem.type == GeoType.VALUE, $abc2 : ((Angle)firstItem) , $valabc : ((GeoValue)secondItem))
+	    $cdb_eq_90 : GeoRelation(relationType == RelationType.VALUE_GEO_RELATION,relation == Relation.EQUALS, firstItem.type == GeoType.ANGLE, secondItem.type == GeoType.VALUE, $cbd2 : ((Angle)firstItem) , $valcbd : ((GeoValue)secondItem))
+		eval($abc1.sameItem($abc2))
+		eval($cbd1.sameItem($cbd2))	
+    then
+        //actions
+       
+	    GeoRelation rel = new GeoRelation($lineAB,$lineCD,Relation.PERPENDICULAR);
+	    
+	    //AdjacentAnglesOnALineRelation rel = new AdjacentAnglesOnALineRelation()
+	    //insert into TransitionKnowledgeHolder
+	    CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(rel);
+	    CheckingEngine.graph.addNode(rel);
+	    System.out.println("Theorem1_2"+rel.getName());
+	    Log.logger.info("Theorem1.2");
+	    
+
+end
+

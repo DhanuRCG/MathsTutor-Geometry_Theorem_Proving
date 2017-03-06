@@ -1,0 +1,50 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "theorem18"
+
+    when
+    	$ABCD : Quadrangle()
+    	
+    	$AConE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	
+    	$BDonE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+        
+        //
+        $AEEC : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+        $BEED : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+        //AC and BD have common point
+        eval(((Point)$AConE.secondItem).sameItem((Point)$BDonE.secondItem))
+        
+        //line point is contain on quadragle
+        eval($ABCD.isAPoint(((Line)$AConE.firstItem).endPoints[0]) && $ABCD.isAPoint(((Line)$AConE.firstItem).endPoints[1]) && $ABCD.isAPoint(((Line)$BDonE.firstItem).endPoints[0]) && $ABCD.isAPoint(((Line)$BDonE.firstItem).endPoints[1]))
+        
+        eval(((Line)$AEEC.firstItem).isAPoint((Point)$AConE.secondItem) && ((Line)$AEEC.secondItem).isAPoint((Point)$AConE.secondItem))
+        eval(((Line)$BEED.firstItem).isAPoint((Point)$BDonE.secondItem) && ((Line)$BEED.secondItem).isAPoint((Point)$BDonE.secondItem))
+        
+        //eval($ABCD.isAPoint(((Line)$AEEC.firstItem).endPoints[0]) || $ABCD.isAPoint(((Line)$AEEC.firstItem).endPoints[1]))
+        //eval($ABCD.isAPoint(((Line)$AEEC.secondItem).endPoints[0]) || $ABCD.isAPoint(((Line)$AEEC.secondItem).endPoints[1]))
+        //eval($ABCD.isAPoint(((Line)$BEED.firstItem).endPoints[0]) || $ABCD.isAPoint(((Line)$BEED.firstItem).endPoints[1]))
+        //eval($ABCD.isAPoint(((Line)$BEED.secondItem).endPoints[0]) || $ABCD.isAPoint(((Line)$BEED.secondItem).endPoints[1]))
+        //conditions
+    then
+        //actions
+        $ABCD.isAParalleologram=true;
+       // insert($ABCD);
+		System.out.println("ABCD parllelgrame");
+		System.out.println("Theorem18");
+end
+

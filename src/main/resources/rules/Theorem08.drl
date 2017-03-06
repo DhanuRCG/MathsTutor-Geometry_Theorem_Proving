@@ -1,0 +1,82 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Theorem8"
+
+    when
+    
+        //conditions
+         //get 2 triangle with 90 degree
+        $ABC : Triangle( angles[0].value == 90 || angles[1].value == 90 || angles[2].value == 90)
+        $PQR : Triangle(angles[0].value == 90 || angles[1].value == 90 || angles[2].value == 90)
+        //get line
+        $AC_PR : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+    	//get hypotenuse
+    	$BC_QR : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+    	
+    	
+    	//get two different triangle
+    	eval( !$ABC.sameItem($PQR))
+    	//line is different
+    	//eval( !( (Line)$AC_PR.firstItem).sameItem( (Line)$AC_PR.secondItem ))
+    	eval( !( (Line)$AC_PR.firstItem).sameItem( (Line)$BC_QR.firstItem ))
+    	eval( !( (Line)$AC_PR.firstItem).sameItem( (Line)$BC_QR.secondItem ))
+    	
+    	eval( !( (Line)$AC_PR.secondItem).sameItem( (Line)$BC_QR.firstItem ))
+    	eval( !( (Line)$AC_PR.secondItem).sameItem( (Line)$BC_QR.secondItem ))
+    	
+    	//eval( !( (Line)$BC_QR.firstItem).sameItem( (Line)$BC_QR.secondItem ))
+    	// line are contain triangle
+    	eval( $ABC.isALine((Line)$AC_PR.firstItem) && $PQR.isALine((Line)$AC_PR.secondItem))
+    	//eval( $ABC.isALine((Line)$AC_PR.secondItem) || $PQR.isALine((Line)$AC_PR.secondItem))
+    	eval( $ABC.isALine((Line)$BC_QR.firstItem) || $PQR.isALine((Line)$BC_QR.firstItem))
+    	eval( $ABC.isALine((Line)$BC_QR.secondItem) || $PQR.isALine((Line)$BC_QR.secondItem))
+    	//two triangle have same length line
+    	//eval( ($ABC.isALine( ( (Line)$AC_PR.firstItem)) && $PQR.isALine(( (Line)$AC_PR.secondItem)))
+    		//||
+    		//($ABC.isALine( ( (Line)$AC_PR.secondItem)) && $PQR.isALine(( (Line)$AC_PR.firstItem)))
+    	//)
+    	//eval( ($ABC.isALine( ( (Line)$BC_QR.firstItem)) && $PQR.isALine(( (Line)$BC_QR.secondItem)))
+    		//||
+    		//($ABC.isALine( ( (Line)$BC_QR.secondItem)) && $PQR.isALine(( (Line)$BC_QR.firstItem)))
+    	//)
+    	//identified hypotenuse line
+    	eval(  
+    			(($ABC.angles[0].value == 90) && ( !$ABC.angles[0].isALine((Line)$BC_QR.firstItem) && !$ABC.angles[0].isALine((Line)$BC_QR.secondItem)))
+    			||(($ABC.angles[1].value == 90) && ( !$ABC.angles[1].isALine((Line)$BC_QR.firstItem) && !$ABC.angles[1].isALine((Line)$BC_QR.secondItem)))
+    			||(($ABC.angles[2].value == 90) && ( !$ABC.angles[2].isALine((Line)$BC_QR.firstItem) && !$ABC.angles[2].isALine((Line)$BC_QR.secondItem)))
+    			
+    		)
+    	eval(  
+    			(($PQR.angles[0].value == 90) && ( !$PQR.angles[0].isALine((Line)$BC_QR.firstItem) && !$PQR.angles[0].isALine((Line)$BC_QR.secondItem)))
+    			||(($PQR.angles[1].value == 90) && ( !$PQR.angles[1].isALine((Line)$BC_QR.firstItem) && !$PQR.angles[1].isALine((Line)$BC_QR.secondItem)))
+    			||(($PQR.angles[2].value == 90) && ( !$PQR.angles[2].isALine((Line)$BC_QR.firstItem) && !$PQR.angles[2].isALine((Line)$BC_QR.secondItem)))
+    			
+    		)
+    
+    	
+    	
+        
+    then
+        //actions
+        //System.out.println("Theorem 8");
+        Log.logger.info("Theorem 08");
+        GeoRelation ABCconqDEF = new GeoRelation($ABC, $PQR, Relation.CONGRUENT);
+    	CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ABCconqDEF);
+
+end
+
+

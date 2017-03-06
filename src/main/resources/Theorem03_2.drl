@@ -1,0 +1,49 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+
+//declare any global variables here
+
+
+
+//Theorem 3.2 
+rule " alternate angles between parallel lines are equal"
+    when
+    	//two paralleline
+     $ABparaCD : GeoRelation(this.relation==Relation.PARALLEL_LINES && $AB : ((Line)this.firstItem) && $CD : ((Line)this.secondItem))
+     
+     eval(!($AB.isAPoint($CD.endPoints[0]) || $AB.isAPoint($CD.endPoints[1])))	
+     
+    	//line
+     $BD : Line()
+   	 //two angle
+   	 $ABC : Angle()
+   	 $BCD : Angle()
+     //two angle not be a same item
+     eval(!$ABC.sameItem($BCD))
+    eval(($ABC.directionLeft.sameItem((Line)$ABparaCD.firstItem) && $BCD.directionLeft.sameItem((Line)$ABparaCD.secondItem) && $ABC.directionRight.sameItem($BD) && $BCD.directionRight.sameItem($BD) )
+    ||($ABC.directionRight.sameItem((Line)$ABparaCD.firstItem) && $BCD.directionRight.sameItem((Line)$ABparaCD.secondItem)  && $ABC.directionLeft.sameItem($BD) && $BCD.directionLeft.sameItem($BD) ) )
+    
+    then
+   	 GeoRelation ABCequalBCD = new GeoRelation($ABC, $BCD, Relation.EQUALS);
+   	 Log.logger.info("Theorem 3.2 : "+$ABparaCD.getName()+" --> "+$ABC.getName()+"=" +$BCD.getName());
+   	 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ABCequalBCD);
+   	 CheckingEngine.reasonHolder.addReason(ABCequalBCD,"ඒකාන්තර කෝණ");
+   	 CheckingEngine.graph.addNode(ABCequalBCD,"ඒකාන්තර කෝණ", $ABparaCD);
+		Log.logger.info("Theorem 3_2 : " +$ABparaCD.getName()+" --> "+ABCequalBCD.getName());
+   	 
+   	 insert(ABCequalBCD);   	 
+
+end
+

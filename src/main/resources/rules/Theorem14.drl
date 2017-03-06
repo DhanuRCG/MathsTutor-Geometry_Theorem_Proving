@@ -1,0 +1,44 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+/*rule "Theorem14"
+
+    when
+        //conditions
+        //parallegrame
+        $ABCD : Quadrangle(isAParalleologram==true)
+        
+    then
+    //oposite line quals
+    
+       	 insert(new GeoRelation($ABCD.lines[0],$ABCD.lines[2],Relation.EQUALS));
+		 insert(new GeoRelation($ABCD.lines[1],$ABCD.lines[3],Relation.EQUALS));
+		 //oposite line parallel
+		 insert(new GeoRelation($ABCD.lines[0],$ABCD.lines[2],Relation.PARALLEL_LINES));
+		 insert(new GeoRelation($ABCD.lines[1],$ABCD.lines[3],Relation.PARALLEL_LINES));
+		 //oposite angleequals
+		 insert(new GeoRelation(new Angle($ABCD.lines[1],$ABCD.lines[0]),new Angle($ABCD.lines[3],$ABCD.lines[2]),Relation.EQUALS));
+		 //oposite angleequals
+		 insert(new GeoRelation(new Angle($ABCD.lines[2],$ABCD.lines[1]),new Angle($ABCD.lines[0],$ABCD.lines[3]),Relation.EQUALS));
+		 insert(new GeoRelation(new Triangle($ABCD.lines[0],$ABCD.lines[1],$ABCD.lines[2]),new Triangle($ABCD.lines[0],$ABCD.lines[3],$ABCD.lines[2]),Relation.EQUALS))
+		 insert(new GeoRelation(new Triangle($ABCD.lines[1],$ABCD.lines[2],$ABCD.lines[3]),new Triangle($ABCD.lines[1],$ABCD.lines[0],$ABCD.lines[3]),Relation.EQUALS));
+		
+		 
+		 System.out.println("Theorem14");
+		 
+end*/
+
+

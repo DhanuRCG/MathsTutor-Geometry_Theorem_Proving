@@ -1,0 +1,62 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Theorem9"
+
+    when
+        //conditions
+        $ABC : Triangle()
+        $ADonC : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	$BCD  : Angle()
+        //line contain trianlge
+        eval(($ABC.isAPoint( ((Line)$ADonC.firstItem).endPoints[0]) || $ABC.isAPoint( ((Line)$ADonC.firstItem).endPoints[1])) && $ABC.isAPoint( ((Point)$ADonC.secondItem)))
+    	//angle one line in triangle other on is extended line
+    	eval( $ABC.isALine($BCD.directionLeft) || $ABC.isALine($BCD.directionRight))
+    	eval(
+    		($BCD.directionLeft.isAPoint( ((Line)$ADonC.firstItem).endPoints[0] ) || $BCD.directionLeft.isAPoint( ((Line)$ADonC.firstItem).endPoints[1] )) &&  $BCD.directionLeft.isAPoint( ((Point)$ADonC.secondItem))
+    		||
+    		($BCD.directionRight.isAPoint( ((Line)$ADonC.firstItem).endPoints[0] ) || $BCD.directionRight.isAPoint( ((Line)$ADonC.firstItem).endPoints[1] )) &&  $BCD.directionRight.isAPoint( ((Point)$ADonC.secondItem))
+    	)
+    
+    then
+        //actions
+        ExpressionRelation expresion=new ExpressionRelation(RelationType.EXPRESSION_RELATION);
+        if($ABC.points[0].sameItem( (Point)$ADonC.secondItem )){
+        	
+        	expresion.addAllItems($ABC.angles[1],$ABC.angles[2],$BCD);
+        	expresion.addAllOperations(Relation.PLUS,Relation.EQUALS);
+        	
+        	
+        }
+         if($ABC.points[1].sameItem( (Point)$ADonC.secondItem )){
+        	
+        	expresion.addAllItems($ABC.angles[0],$ABC.angles[2],$BCD);
+        	expresion.addAllOperations(Relation.PLUS,Relation.EQUALS);
+        	
+        	
+        }
+         if($ABC.points[2].sameItem( (Point)$ADonC.secondItem )){
+        	expresion.addAllItems($ABC.angles[1],$ABC.angles[0],$BCD);
+        	expresion.addAllOperations(Relation.PLUS,Relation.EQUALS);
+        	
+        	
+        }
+        
+         //System.out.println("Theorem9");
+         Log.logger.info("Theorem 09");
+
+end
+

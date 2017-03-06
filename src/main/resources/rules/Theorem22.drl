@@ -1,0 +1,36 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+
+rule "theorem22"
+
+    when
+    	$ABCD : Quadrangle()
+    	$ABXY : Quadrangle()
+    	
+    	//deferent quadrangle
+    	eval(!$ABCD.sameItem($ABXY))
+    	//find common base line
+    	eval($ABCD.isALine($ABXY.lines[0])||$ABCD.isALine($ABXY.lines[1])||$ABCD.isALine($ABXY.lines[2])||$ABCD.isALine($ABXY.lines[3]))
+        //conditions
+    then
+        //actions
+        //insert(new GeoRelation($ABCD,$ABXY,Relation.EQUALS));
+        System.out.println("ABCD area equal ABXY");
+        System.out.println("Theorem22");
+
+end
+

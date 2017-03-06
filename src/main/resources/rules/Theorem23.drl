@@ -1,0 +1,37 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.geometry.Quadrangle;
+import com.test.Log;
+rule "Your First Rule2"
+
+    when
+    	$ABCD : Quadrangle()
+    	$AXB : Triangle()
+    	// mid point on AB line
+    	$CDonX : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	//have a common base line for quadrangle and triangle
+    	eval($ABCD.isALine($AXB.lines[0])||$ABCD.isALine($AXB.lines[1])||$ABCD.isALine($AXB.lines[2]))
+        //conditions
+        //find alternative line for base line
+        eval($ABCD.isALine((Line)$CDonX.firstItem)) 
+        eval(!$AXB.isAPoint(((Line)$CDonX.firstItem).endPoints[0])&& !$AXB.isAPoint(((Line)$CDonX.firstItem).endPoints[1]))
+        
+    then
+        //actions
+        //insert(new GeoRelation($ABCD,$AXB,Relation.EQUALS));
+        System.out.println("ABCD=2AXB");
+        System.out.println("Theorem23");
+
+end
+

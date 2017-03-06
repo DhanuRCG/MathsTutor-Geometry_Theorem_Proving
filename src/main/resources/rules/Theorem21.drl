@@ -1,0 +1,44 @@
+//created on: Dec 6, 2016
+
+package com.geometry
+
+//list any import classes here.
+
+import com.engine.CheckingEngine;
+import com.geometry.*;
+import com.test.Log;
+
+rule "Theorem 21"
+
+    when
+        //conditions
+         //getting triangle
+    	$ABC : Triangle()
+     	// mid point on AB line
+    	$ABmidD : GeoRelation( this.relation==Relation.MIDPOINT)
+    
+    	eval($ABC.isALine(((Line)$ABmidD.firstItem)))
+    	$DE_para_BC : GeoRelation(this.relation==Relation.PARALLEL_LINES)
+    
+    	eval($ABC.isALine((Line)$DE_para_BC.secondItem))
+    
+    	$AConE : GeoRelation(this.relation==Relation.ON_THE_LINE)
+    	eval($ABC.isALine(((Line)$AConE.firstItem)) && !((Line)$ABmidD.firstItem).sameItem((Line)$AConE.firstItem))
+    	eval((((Line)$DE_para_BC.firstItem).isAPoint((Point)$ABmidD.secondItem)) && 
+    		(((Line)$DE_para_BC.firstItem).isAPoint((Point)$AConE.secondItem)))
+    then
+    	GeoRelation ACmidE = new GeoRelation((Line)$AConE.firstItem,(Point)$AConE.secondItem,Relation.MIDPOINT);
+		Line AD =new Line((((Line)ACmidE.firstItem).endPoints[0]),(Point)ACmidE.secondItem);
+		Line BD = new Line((((Line)ACmidE.firstItem).endPoints[1]),(Point)ACmidE.secondItem);
+	
+		GeoRelation ADeqBD = new GeoRelation(AD,BD,Relation.EQUALS);
+		GeoRelation ADhalfAB = new FactorGeoRelation(AD,(Line)ACmidE.firstItem,Relation.EQUALS,"(1/2)");
+		GeoRelation BDhalfAB = new FactorGeoRelation(BD,(Line)ACmidE.firstItem,Relation.EQUALS,"(1/2)");
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ADeqBD);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ADhalfAB);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(BDhalfAB);
+		Log.logger.info("Theorem 21 : "+$DE_para_BC.getName()+" & "+ $ABmidD.getName()+" --> " + ADeqBD.getName());
+		Log.logger.info("Theorem 21 : "+$DE_para_BC.getName()+" & "+ $ABmidD.getName()+" --> " + ADhalfAB.getName());
+		Log.logger.info("Theorem 21 : "+$DE_para_BC.getName()+" & "+ $ABmidD.getName()+" --> " + BDhalfAB.getName());
+		
+end

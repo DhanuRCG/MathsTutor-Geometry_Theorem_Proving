@@ -1,0 +1,62 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.test.Log;
+//"sum of adjacent angles on a line is 180 degrees"
+rule "Theorem1"
+
+    when
+        //There should be a point on a line	
+		$G1 :GeoRelation( 
+					(firstItem.type == GeoType.LINE)
+    				&& 
+    				( secondItem.type == GeoType.POINT )
+    				&& 
+    				( relation == Relation.ON_THE_LINE ) 
+    				&&
+    				( $lineAB : ((Line)firstItem) )
+    				&& 
+    				( $pointC : ((Point)secondItem) )
+    				)
+    
+    	//There should be a different line which has pointC as one end
+    	$lineCD :  Line((type == GeoType.LINE && (this.endPoints[0] == $pointC  || this.endPoints[1] == $pointC)))
+    	//Other end should not be end point of Line AB
+    	eval(!$lineCD.endPoints[0].sameItem($lineAB.endPoints[0]))	
+    	eval(!$lineCD.endPoints[1].sameItem($lineAB.endPoints[1]))
+    	
+    	$ACD : Angle()
+    	eval($ACD.isMiddlePoint($pointC.name)) && eval($ACD.isACornerPoint($lineAB.endPoints[0].name))
+    	
+    	$BCD : Angle()
+    	eval($BCD.isMiddlePoint($pointC.name)) && eval($BCD.isACornerPoint($lineAB.endPoints[1].name))
+    	
+    then
+        //actions
+        
+        ExpressionRelation relation1=new ExpressionRelation(RelationType.EXPRESSION_RELATION);
+        
+	   	Angle val=new Angle(180);
+	   	relation1.addItem($ACD);
+	    relation1.addOperation(Relation.PLUS);
+	    relation1.addItem($BCD);
+	    relation1.addOperation(Relation.EQUALS);
+	    relation1.addItem(val);
+	    
+	    //AdjacentAnglesOnALineRelation rel = new AdjacentAnglesOnALineRelation()
+	    //insert into TransitionKnowledgeHolder
+	    //CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(relation1);
+	    //System.out.println("Theorem1");
+	    Log.logger.info("Theorem1");
+
+end
+

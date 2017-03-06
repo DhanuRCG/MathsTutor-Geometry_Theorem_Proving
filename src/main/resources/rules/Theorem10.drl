@@ -1,0 +1,34 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+rule "Theorem10"
+
+    when
+        //conditions
+          $ABC : Triangle()
+          
+    then
+        //actions
+        ExpressionRelation expresion=new ExpressionRelation(RelationType.EXPRESSION_RELATION);
+        Angle BCD=new Angle(180);
+        
+        expresion.addAllItems($ABC.angles[0],$ABC.angles[2],$ABC.angles[2],BCD);
+        expresion.addAllOperations(Relation.PLUS,Relation.PLUS,Relation.EQUALS);
+		//insert(expresion);   
+		//System.out.println("Theorem10");
+		TriangleGeoRelation rel = new TriangleGeoRelation($ABC.angles[0],$ABC.angles[1],$ABC.angles[2],RelationType.TRIANGLESUM);   
+		Log.logger.info("Theorem10");  	
+
+end

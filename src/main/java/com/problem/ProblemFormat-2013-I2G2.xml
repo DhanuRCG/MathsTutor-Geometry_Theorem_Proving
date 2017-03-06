@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<problem>
+	<type>GeoProof</type>
+	<sectionid>1</sectionid>
+	<question id="q01">
+		<figure>
+			<construction>
+				<elements>
+					<point id="A" />
+					<point id="B" />
+					<point id="C" />
+					<point id="D" />
+					<point id="M" />
+
+					<line id="AB" />
+					<line id="AC" />
+					<line id="AD" />
+					<line id="BD" />
+					<line id="BC" />
+					<line id="CD" />
+					<line id="MA" />
+					<line id="MB" />
+					<line id="MC" />
+					<line id="MD" />
+
+					<angle id="ABC" />
+					<angle id="ABM" />
+					<angle id="ABD" />
+					<angle id="CBM" />
+					<angle id="CBD" />
+					<angle id="BAD" />
+					<angle id="BAM" />
+					<angle id="BAC" />
+					<angle id="CAD" />
+					<angle id="MAD" />
+					<angle id="ADC" />
+					<angle id="ADM" />
+					<angle id="ADB" />
+					<angle id="CDB" />
+					<angle id="CDM" />
+					<angle id="DCB" />
+					<angle id="DCM" />
+					<angle id="DCA" />
+					<angle id="ACB" />
+					<angle id="MCB" />
+					<angle id="BMC" />
+					<angle id="CMD" />
+					<angle id="DMA" />
+					<angle id="AMB" />
+
+					<triangle id="ABC" />
+					<triangle id="ADC" />
+					<triangle id="ABD" />
+					<triangle id="BCD" />
+					<triangle id="ABM" />
+					<triangle id="MBC" />
+					<triangle id="MCD" />
+					<triangle id="MDA" />
+
+					
+					<quadrangle id="ABCD"/>
+
+				</elements>
+				<constraints>
+					<free_point>
+						<point out="true">A</point>
+					</free_point>
+					<free_point>
+						<point out="true">B</point>
+					</free_point>
+					<free_point>
+						<point out="true">C</point>
+					</free_point>
+					<free_point>
+						<point out="true">D</point>
+					</free_point>
+					<free_point>
+						<point out="true">M</point>
+					</free_point>
+					<point_on_line_segment>
+						<point id="M" />
+						<line id="BD" />
+					</point_on_line_segment>
+					<midpoint_of_line_segment>
+						<point id="M" />
+						<line id="AC" />
+					</midpoint_of_line_segment>
+					<two_parallel_line_segments>
+						<line id="AD" />
+						<line id="BC" />
+					</two_parallel_line_segments>
+
+					<two_equal_angle_segments>
+						<angle id="BCA" />
+						<angle id="ACD" />
+					</two_equal_angle_segments>
+
+				</constraints>
+			</construction>
+		</figure>
+		<subQuestion id="01" isProof="false">
+			//Complete the diagram;
+			Figure representation has been written considering the
+			completed diagram.
+		</subQuestion>
+		<subQuestion id="02" isProof="true">
+			<geoRelation type="congruent">
+				<geoItem type="triangle" id="ADM"></geoItem>
+				<geoItem type="triangle" id="BMC"></geoItem>
+			</geoRelation>
+		</subQuestion>
+		<subQuestion id="03" isProof="true">
+			<geoItem type="parallelogram" id="ABCD"></geoItem>
+		</subQuestion>
+		<subQuestion id="04" isProof="true">
+			//BCD ත්‍රිකෝණය සමද්විපාද බව 
+		</subQuestion>
+		<subQuestion id="05" isProof="true">
+			//සුදුසු ත්‍රිකෝණ 2ක් අංගසම බව පෙන්වීමෙන් BD හා AC ලම්භක බව 
+		</subQuestion>
+	</question>
+</problem>

@@ -1,0 +1,67 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+
+
+rule "thorem6"
+
+    when
+        //conditions
+        //get 2 triangle
+        $PQR : Triangle()
+        $XYZ : Triangle()
+        //two different triangle
+        eval(!$PQR.sameItem($XYZ))
+        
+        //get equal line
+        $QR_YZ : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS, 
+         		$QR:((Line)firstItem), $YZ:((Line)secondItem) )
+        
+        //Equal lines should be in two triangles
+        eval($PQR.isALine($QR))
+        eval($XYZ.isALine($YZ))
+        
+        //get equal angles
+        $PQR_angle_XYZ : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS, 
+        				 $PQRang: ((Angle)firstItem), $XYZang: ((Angle)secondItem))
+        $QPR_angle_YXZ : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS,
+        				 $QPRang: ((Angle)firstItem), $YXZang: ((Angle)secondItem))
+        //Should be different relations
+        eval(!$PQR_angle_XYZ.sameRelation($QPR_angle_YXZ))
+        
+        //Equal angles should be in two triangles
+        eval($PQR.isAnAngle($PQRang))
+        eval($PQR.isAnAngle($QPRang))
+        eval($XYZ.isAnAngle($XYZang))
+        eval($XYZ.isAnAngle($YXZang))
+        
+        //Case 01
+        //Equal line is the line which is common to equal angles of a tringle  
+        eval(($PQRang.isALine($QR) && $QPRang.isALine($QR) && $XYZang.isALine($YZ) && $YXZang.isALine($YZ)) ||
+        //Case 02
+        //Equal line is the corrosponding angles to relevant angles
+        	($PQR.getOppositeSide($PQRang).sameItem($QR) && $XYZ.getOppositeSide($XYZang).sameItem($YZ)) ||
+        	($PQR.getOppositeSide($QPRang).sameItem($QR) && $XYZ.getOppositeSide($YXZang).sameItem($YZ))
+        	)
+           
+    then
+        //actions
+		    //actions
+	GeoRelation PQRconqXYZ = new GeoRelation($PQR, $XYZ, Relation.CONGRUENT);
+    CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(PQRconqXYZ);
+    Log.logger.info("Theorem 06 : " +$PQR_angle_XYZ.getName()+" && "+$QPR_angle_YXZ.getName()+" && "+$QR_YZ.getName()
+    				+ " --> "+PQRconqXYZ.getName());
+	
+end

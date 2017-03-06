@@ -1,0 +1,46 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+
+rule "Theorem15"
+
+    when
+        //conditions
+        //parallegrame
+        $ABCD : Quadrangle(isAParalleologram==true)
+    	//two cross line
+    	$AConE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+    	
+    	$BDonE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.POINT, this.relation==Relation.ON_THE_LINE )
+        // two line have common point
+        eval(((Point)$AConE.secondItem).sameItem((Point)$BDonE.secondItem))
+        // cross line have 4 different point that are point in qudrangle
+        eval(!((Line)$AConE.firstItem).isAPoint(((Line)$BDonE.firstItem).endPoints[0]) && !((Line)$AConE.firstItem).isAPoint(((Line)$BDonE.firstItem).endPoints[1]))
+    	eval($ABCD.isAPoint(((Line)$AConE.firstItem).endPoints[0]) && $ABCD.isAPoint(((Line)$AConE.firstItem).endPoints[1]) && $ABCD.isAPoint(((Line)$BDonE.firstItem).endPoints[0]) && $ABCD.isAPoint(((Line)$BDonE.firstItem).endPoints[1]))
+    then
+        //actions
+        Line AE=new Line(((Line)$AConE.firstItem).endPoints[0],(Point)$AConE.secondItem);
+        Line CE=new Line(((Line)$AConE.firstItem).endPoints[1],(Point)$AConE.secondItem);
+         Line BE=new Line(((Line)$BDonE.firstItem).endPoints[0],(Point)$AConE.secondItem);
+        Line DE=new Line(((Line)$BDonE.firstItem).endPoints[1],(Point)$AConE.secondItem);
+        
+        GeoRelation AEequalCE=new GeoRelation(AE,CE,Relation.EQUALS);
+         GeoRelation BEequalDE=new GeoRelation(BE,DE,Relation.EQUALS);
+         
+        System.out.println("Theorem15");
+
+end
+

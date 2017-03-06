@@ -1,0 +1,70 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Theorem14"
+
+    when
+        //conditions
+        //parallegrame
+        $ABCD : Quadrangle(isAParalleologram==true)
+        
+    then
+    //oposite line quals
+    
+       	 GeoRelation g1 = new GeoRelation($ABCD.lines[0],$ABCD.lines[2],Relation.EQUALS);
+       	 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g1);
+		 CheckingEngine.reasonHolder.addReason(g1,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g1,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+         
+		 GeoRelation g2 =  new GeoRelation($ABCD.lines[1],$ABCD.lines[3],Relation.EQUALS);
+		 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g2);
+		 CheckingEngine.reasonHolder.addReason(g2,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g2,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 //oposite line parallel
+		 GeoRelation g3 =  new GeoRelation($ABCD.lines[0],$ABCD.lines[2],Relation.PARALLEL_LINES);
+		 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g3);
+		 CheckingEngine.reasonHolder.addReason(g3,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g3,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 GeoRelation g4 =  new GeoRelation($ABCD.lines[1],$ABCD.lines[3],Relation.PARALLEL_LINES);
+		 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g4);
+		 CheckingEngine.reasonHolder.addReason(g4,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g4,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 //oposite angleequals
+		 GeoRelation g5 =  new GeoRelation(new Angle($ABCD.lines[1],$ABCD.lines[0]),new Angle($ABCD.lines[3],$ABCD.lines[2]),Relation.EQUALS);
+		 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g5);
+		 CheckingEngine.reasonHolder.addReason(g5,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g5,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 //oposite angleequals
+		 GeoRelation g6 =  new GeoRelation(new Angle($ABCD.lines[2],$ABCD.lines[1]),new Angle($ABCD.lines[0],$ABCD.lines[3]),Relation.EQUALS);
+		 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g6);
+		 CheckingEngine.reasonHolder.addReason(g6,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g6,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 GeoRelation g7 =  new GeoRelation(new Triangle($ABCD.points[0],$ABCD.points[1],$ABCD.points[2]),new Triangle($ABCD.points[0],$ABCD.points[3],$ABCD.points[2]),Relation.EQUALS);
+		 CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g7);
+		 CheckingEngine.reasonHolder.addReason(g7,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g7,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 GeoRelation g8 =  new GeoRelation(new Triangle($ABCD.points[1],$ABCD.points[2],$ABCD.points[3]),new Triangle($ABCD.points[1],$ABCD.points[0],$ABCD.points[3]),Relation.EQUALS);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(g8);
+		 CheckingEngine.reasonHolder.addReason(g8,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 CheckingEngine.graph.addNode(g8,$ABCD.getName()+" සමාන්තරාස්‍රයකි");
+		 
+		 //System.out.println("Theorem14");
+		 
+		 //System.out.println("Theorem14");
+		 
+end
+
+

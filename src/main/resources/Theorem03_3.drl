@@ -1,0 +1,56 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+
+//declare any global variables here
+
+
+
+//theorem 3.3
+rule "friend angles between parallel line"
+
+    when
+    //two paralleline
+     $ABparaCD : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.PARALLEL_LINES )
+    	//line
+     $BD : Line()
+   	 //two angle
+   	 $ABD : Angle()
+   	 $BDC : Angle()
+   	 //line contain two angle
+   	 eval($ABD.isALine($BD))
+   	 eval($BDC.isALine($BD))
+   	 
+   	 eval(
+   	 		$ABD.directionLeft.sameItem(((Line)$ABparaCD.firstItem)) && $ABD.directionRight.sameItem($BD) && 
+   	 		$BDC.directionRight.sameItem(((Line)$ABparaCD.secondItem)) && $BDC.directionLeft.sameItem($BD) 
+   	 		
+   	 	)
+   	 
+    
+    then
+
+    	 //ExpressionRelation expresion=new ExpressionRelation(RelationType.EXPRESSION_RELATION);
+    	 
+    	 //Angle val=new Angle(180);
+    	 //expresion.addAllItems($ABD,$BDC,val);
+    	 //expresion.addAllOperations(Relation.PLUS,Relation.EQUALS);
+		 //insert(expresion); 
+		 //System.out.println($ABD+""+$BDC+" =180");
+        //System.out.println(expresion);
+        String log = $ABD.getName()+"+"+$BDC.getName()+" =180";
+        Log.logger.info(log);
+        
+end
+

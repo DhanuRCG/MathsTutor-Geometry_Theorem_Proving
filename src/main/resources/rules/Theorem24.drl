@@ -1,0 +1,39 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Your First Rule3"
+
+    when
+    	$ABCD : Quadrangle()
+    	$ABC : Triangle()
+    	$ABD : Triangle()
+    	
+    	//first triangle point is 3 of parallelgrame 
+    	eval($ABCD.isAPoint($ABC.points[0]) && $ABCD.isAPoint($ABC.points[1]) && $ABCD.isAPoint($ABC.points[2]))
+        //second triangle point is 3 of parallelgrame 
+    	eval($ABCD.isAPoint($ABD.points[0]) && $ABCD.isAPoint($ABD.points[1]) && $ABCD.isAPoint($ABD.points[2]))
+        
+        
+        //conditions
+    then
+        //actions
+        //insert(new GeoRelation($ABC,$ABD,Relation.EQUALS))
+        //System.out.println("ABC=ABD");
+        //System.out.println("Theorem24");
+        Log.logger.info("Theorem24");
+
+end
+

@@ -1,0 +1,103 @@
+package com.geometry
+
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.test.Log;
+import com.engine.CheckingEngine;
+import com.geometry.*;
+//declare any global variables here
+
+//function
+
+
+rule "Theorem5"
+
+    when
+        //conditions
+        // get two triangle
+        $ABC : Triangle()
+        $CDE : Triangle()
+        //two eqal angle
+       $ABC_equal_DEF : GeoRelation( this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS,
+       					$ABCang :((Angle) firstItem), $DEFang:((Angle) secondItem)
+        )
+        //get two equal lie
+        $AB_equal_DE : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS,this.relationType == RelationType.GEO_RELATION,
+        				$ab : ((Line)firstItem),$de : ((Line)secondItem)
+        )
+      //get two equal line
+		$BC_equal_EF : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS ,this.relationType == RelationType.GEO_RELATION,
+					$bc : ((Line)firstItem),$ef : ((Line)secondItem)
+		)
+		
+      	//two different triangle
+        eval(!$ABC.sameItem($CDE))
+      	//two angle different item
+      	eval(!$ABCang.sameItem($DEFang))
+      	//two line different line equal relation
+      	eval(!$ab.sameItem($bc))
+      	eval(!$ab.sameItem($ef))
+      	eval(!$de.sameItem($bc))
+      	eval(!$de.sameItem($ef))
+      	//two contain two different triangle
+      	eval(($ABC.isALine($ab) && $CDE.isALine($de)) || ($ABC.isALine($de) && $CDE.isALine($ab)))
+      	eval(($ABC.isALine($bc) && $CDE.isALine($ef)) || ($ABC.isALine($ef) && $CDE.isALine($bc)))
+      	//ABC_equal_DEF first item contain ABC triangle send item contain CDE triangle or other way
+      	eval($ABC.isAPoint($ABCang.pointOne) && $ABC.isAPoint($ABCang.middle) && $ABC.isAPoint($ABCang.pointThree) && $CDE.isAPoint($DEFang.pointOne) && $CDE.isAPoint($DEFang.middle) && $CDE.isAPoint($DEFang.pointThree))
+      	//equalline contain onesite each angle
+      	eval( ($ABCang.isALine($ab) && $DEFang.isALine($de)) || ($ABCang.isALine($de) && $DEFang.isALine($ab)))
+      	eval( ($ABCang.isALine($bc) && $DEFang.isALine($ef)) ||($ABCang.isALine($ef) && $DEFang.isALine($bc)) )
+
+		//
+    then
+    	Log.logger.info("Theorem5");
+       
+        GeoRelation ABCconqCDE = new GeoRelation($ABC, $CDE, Relation.CONGRUENT);
+        CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ABCconqCDE);
+		CheckingEngine.reasonHolder.addReason(ABCconqCDE,"පා. කෝ. පා.");
+		CheckingEngine.graph.addNode(ABCconqCDE,"පා. කෝ. පා.");
+		
+		GeoRelation AC_eq_DF = new GeoRelation($ABC.getOppositeSide($ABCang),$CDE.getOppositeSide($DEFang),Relation.EQUALS);
+		GeoRelation BCA_eq_EFD  = null;
+		
+		if($ABC.isALine($ab)){
+			
+			BCA_eq_EFD = new GeoRelation($ABC.getOpositeAngle($ab),$CDE.getOpositeAngle($de),Relation.EQUALS);;
+    		
+		}
+		else{
+			BCA_eq_EFD = new GeoRelation($ABC.getOpositeAngle($de),$CDE.getOpositeAngle($ab),Relation.EQUALS);;
+    	}
+		
+		
+    	  GeoRelation CAB_eq_FDE  =null;
+    	  
+    	if($ABC.isALine($bc)){
+    CAB_eq_FDE = new GeoRelation($ABC.getOpositeAngle($bc),$CDE.getOpositeAngle($ef),Relation.EQUALS);;
+    	
+	
+		}
+		else{
+			CAB_eq_FDE = new GeoRelation($ABC.getOpositeAngle($ef),$CDE.getOpositeAngle($bc),Relation.EQUALS);;
+    	
+		} 
+		
+    	
+    
+    CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(AC_eq_DF);
+    CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(BCA_eq_EFD);
+    CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(CAB_eq_FDE);
+    CheckingEngine.graph.addNode(AC_eq_DF,ABCconqCDE);
+    CheckingEngine.graph.addNode(BCA_eq_EFD,ABCconqCDE);
+    CheckingEngine.graph.addNode(CAB_eq_FDE,ABCconqCDE);
+    //System.out.println("Theorem5");
+    
+end

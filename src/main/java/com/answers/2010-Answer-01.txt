@@ -1,0 +1,26 @@
+﻿<sub>
+	∠ABC=∠ACB (AB=AC බැවින් )
+	∠ACB=∠DFB ( අනුරුප කෝණ )
+	∠ABC=∠DFB
+	∠DBF=∠DFB
+
+<sub>
+	BD=CE ( දත්තය )
+	BD=DF ( ∠DBF=∠DFB බැවින් )
+	DF=CE
+	DFO හා ECO ත්‍රිකෝණ වල,
+		DF=CE ( සාධිතයි )
+		∠DFO=∠OCE ( ඒකාන්තර කෝණ )	
+		∠FDO=∠OEC ( ඒකාන්තර කෝණ )
+		DFO△≡ECO△ ( කෝ. කෝ. පා. )
+
+<sub>
+	OC=(1/2)FC (FO=OC)
+	FC=(1/2)BC (BF=FC)
+	OC=(1/4)BC
+	
+<sub>
+	DF=CE
+	DF//CE
+	බැවින් DFEC සමන්තරාශ්‍රයකි.
+	

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<markingScheme>
+	<type>GeoProof</type>
+	<sectionid>1</sectionid>
+	<question id="q01" totalMarks="10">
+		<subQuestion id="01" totalMarks="1" isProof="false">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="02" totalMarks="3" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="true"
+					maxMark="total">
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AM</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>MC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>දත්තය</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="false" allowMissingsteps="true"
+					maxMark="2">
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>DAM</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>MCB</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ඒකාන්තර කෝණ</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>ADM</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>MBC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ඒකාන්තර කෝණ</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="true">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>AMD</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>BMC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>ප්‍රතිමුඛ කෝණ</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="0" reasonReuired="false">
+						<expression required="true" mark="0">
+							<geoRelation type="congruent">
+								<geoItem type="triangle">
+									<name>AMD</name>
+								</geoItem>
+								<geoItem type="triangle">
+									<name>BMC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>කෝ. කෝ. පා.</phrase>
+						</reason>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="03" totalMarks="1" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="true"
+					maxMark="1" minMark="1">
+					<step mark="0.5" reasonReuired="true">
+						<expression required="true" mark="0.5">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AM</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>MC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>දත්තය</phrase>
+						</reason>
+					</step>
+					<step mark="0.5" reasonReuired="false">
+						<expression required="true" mark="0.5">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>DM</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>MB</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>අංගසම ත්‍රිකෝණ වල අනුරුප අංග</phrase>
+						</reason>
+					</step>
+				</markBlock>
+			</markSet>
+			<markSet id="2">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="1" minMark="1">
+					<step mark="0.5" reasonReuired="false">
+						<expression required="true" mark="0.5">
+							<geoRelation type="parallel_lines">
+								<geoItem type="line">
+									<name>AD</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>BC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>දත්තය</phrase>
+						</reason>
+					</step>
+					<step mark="0.5" reasonReuired="false">
+						<expression required="true" mark="0.5">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AD</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>BC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="true" mark="0">
+							<phrase>අංගසම ත්‍රිකෝණ වල අනුරුප අංග</phrase>
+						</reason>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="04" totalMarks="2" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="0" reasonReuired="false">
+						<expression required="true" mark="0">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>DCA</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>CAB</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase>ඒකාන්තර කෝණ</phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AB</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>BC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase>∠BAC=∠BCA නිසා</phrase>
+						</reason>
+					</step>
+					<step mark="0" reasonReuired="false">
+						<expression required="true" mark="0">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>AB</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>DC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase>ABCD සමාන්තරාශ්‍රයක් නිසා</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="true"
+					maxMark="total">
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>BC</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>DC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+				</markBlock>
+			</markSet>
+		</subQuestion>
+		<subQuestion id="05" totalMarks="3" isProof="true">
+			<markSet id="1">
+				<markBlock orderRequired="false" allowMissingsteps="true"
+					maxMark="total" minMark = "1">
+					<step mark="0.33" reasonReuired="false">
+						<expression required="true" mark="0.33">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>BC</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>CD</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+					<step mark="0.33" reasonReuired="false">
+						<expression required="true" mark="0.33">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>BCM</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>DCM</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+					<step mark="0.34" reasonReuired="false">
+						<expression required="true" mark="0.34">
+							<geoRelation type="equals">
+								<geoItem type="line">
+									<name>CM</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>CM</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase>පොදු පාදය</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="0" reasonReuired="false">
+						<expression required="true" mark="0">
+							<geoRelation type="congruent">
+								<geoItem type="triangle">
+									<name>BCM</name>
+								</geoItem>
+								<geoItem type="triangle">
+									<name>DCM</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase>පා. කෝ. පා.</phrase>
+						</reason>
+					</step>
+				</markBlock>
+				<markBlock orderRequired="true" allowMissingsteps="false"
+					maxMark="total">
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>BMC</name>
+								</geoItem>
+								<geoItem type="angle">
+									<name>DMC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+					<step mark="1" reasonReuired="false">
+						<expression required="true" mark="1">
+							<geoRelation type="equals">
+								<geoItem type="angle">
+									<name>BMC</name>
+								</geoItem>
+								<geoItem type="value">
+									<name>90</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+					<step mark="0" reasonReuired="false">
+						<expression required="true" mark="0">
+							<geoRelation type="perpendicular">
+								<geoItem type="line">
+									<name>BD</name>
+								</geoItem>
+								<geoItem type="line">
+									<name>AC</name>
+								</geoItem>
+							</geoRelation>
+						</expression>
+						<reason required="false" mark="0">
+							<phrase></phrase>
+						</reason>
+					</step>
+
+				</markBlock>
+			</markSet>
+		</subQuestion>
+	</question>
+</markingScheme>

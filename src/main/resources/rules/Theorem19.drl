@@ -1,0 +1,55 @@
+package com.geometry
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Theorem19"
+
+    when
+        //conditions
+         //conditions
+         // qudrangle
+         $ABCD : Quadrangle()
+         //two equal line
+        $ABlineDC : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.EQUALS )
+        //twoparallel line 
+        $ABparaDC : GeoRelation( this.firstItem.type == GeoType.LINE, this.secondItem.type == GeoType.LINE, this.relation==Relation.PARALLEL_LINES )
+   		//two equal line have not common point
+   		eval(!((Line)$ABlineDC.firstItem).isAPoint(((Line)$ABlineDC.secondItem).endPoints[0]) && !((Line)$ABlineDC.firstItem).isAPoint(((Line)$ABlineDC.secondItem).endPoints[1])) 
+   		// two line contain qudrangle 
+   		//AB line
+   		eval($ABCD.isAPoint(((Line)$ABlineDC.firstItem).endPoints[0]) && $ABCD.isAPoint(((Line)$ABlineDC.firstItem).endPoints[0]))
+   		//CD line
+   		eval($ABCD.isAPoint(((Line)$ABlineDC.secondItem).endPoints[0]) && $ABCD.isAPoint(((Line)$ABlineDC.secondItem).endPoints[0]))
+   		
+   		// now we have got two opsite line in quadrangle
+   		
+   		//two paralle line have not common point
+   		eval(!((Line)$ABparaDC.firstItem).isAPoint(((Line)$ABparaDC.secondItem).endPoints[0]) && !((Line)$ABparaDC.firstItem).isAPoint(((Line)$ABparaDC.secondItem).endPoints[1])) 
+   		// two parallel line contain qudrangle 
+   		//AB line
+   		eval($ABCD.isAPoint(((Line)$ABparaDC.firstItem).endPoints[0]) && $ABCD.isAPoint(((Line)$ABparaDC.firstItem).endPoints[0]))
+   		//CD line
+   		eval($ABCD.isAPoint(((Line)$ABparaDC.secondItem).endPoints[0]) && $ABCD.isAPoint(((Line)$ABparaDC.secondItem).endPoints[0]))
+   		
+   		//opiste line and parallel line should be same
+   		eval(((Line)$ABlineDC.firstItem).sameItem(((Line)$ABparaDC.firstItem)))
+    then
+        //actions
+//actions
+        $ABCD.isAParalleologram=true;
+       // insert($ABCD);
+	System.out.println("theorem19");
+end
+

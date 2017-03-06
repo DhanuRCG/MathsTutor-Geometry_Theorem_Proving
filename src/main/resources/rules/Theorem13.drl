@@ -1,0 +1,41 @@
+//list any import classes here.
+
+import com.geometry.Angle;
+import com.geometry.Point;
+import com.geometry.Line;
+import com.geometry.Relation;
+import com.geometry.GeoType;
+import com.geometry.GeoRelation;
+import com.geometry.Triangle;
+import com.geometry.ExpressionRelation;
+import com.geometry.RelationType;
+import com.engine.CheckingEngine;
+import com.test.Log;
+//declare any global variables here
+
+rule "Theorem13"
+
+    when
+        //conditions
+        //Traingle
+        $ABC : Triangle();
+        //find two angle equals
+        $ABCequalBAC : GeoRelation(this.firstItem.type == GeoType.ANGLE, this.secondItem.type == GeoType.ANGLE, this.relation==Relation.EQUALS);
+    	//check angle are different item
+    	eval(!((Angle)$ABCequalBAC.firstItem).sameItem(((Angle)$ABCequalBAC.secondItem)))
+    	//angle contain triangle
+    	//ABC
+    	eval($ABC.isAnAngle(((Angle)$ABCequalBAC.firstItem)))
+    	eval($ABC.isAnAngle(((Angle)$ABCequalBAC.secondItem)))
+    	
+    then
+        //actions
+        
+        Line AC = $ABC.getOppositeSide(((Angle)$ABCequalBAC.firstItem));
+        Line BC = $ABC.getOppositeSide(((Angle)$ABCequalBAC.secondItem));
+        
+        GeoRelation ACeqBC = new GeoRelation(AC,BC,Relation.EQUALS);
+		CheckingEngine.transitionKnowledgeHolder.insertGeoRelation(ACeqBC );
+        Log.logger.info("Theorem 13 - " + $ABCequalBAC.getName()+" --> "+ACeqBC.getName());
+        
+end
