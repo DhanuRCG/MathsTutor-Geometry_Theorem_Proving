@@ -96,35 +96,7 @@ public class CheckingEngine {
 				fireSelectedRules(transitionKnowledgeHolder, rule);
 				fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
 			}
-			/*fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem01.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem02.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem03_1.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem03_2.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem03_3.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem05.drl"});
-//			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-//			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem06.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem12.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem13.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem14.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem19.drl"});
-			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);*/
-//			fireInfirenceEngineWithCommon(transitionKnowledgeHolder);
-//			fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem21.drl"});
-
-
-//		} while (!((currentRelationCountInTemp == transitionKnowledgeHolder.getSize()) 
-//				 || (count==6)));
+			
 	} while (!(
 			  (count==2)));
 		fireSelectedRules(transitionKnowledgeHolder, new String[]{"Theorem06.drl"});
@@ -136,9 +108,6 @@ public class CheckingEngine {
 		int currentRelationCountInTemp, count;
 
 		boolean stepFound;
-		
-		//Newly added
-		//initializeInferenceEngine();
 		
 		while (!answerHolder.endOfAnswer()) {
 			stepFound = false;
@@ -163,18 +132,11 @@ public class CheckingEngine {
 
 					answerHolder.markCurrentAnswer(StepStatus.CORRECT);
 				} else {
-					System.out.print(" Not Coming from prevously Marked data");
-
-//					transitionKnowledgeHolder.clear(); // clean temporal
-														// location
+					System.out.print(" Not Coming from prevously Marked data");														// location
 
 					count = 0;
 					
-					//fireInfirenceEngine(initialGivenKnowledge);//Original code had this line
-					
 					transitionKnowledgeHolder.insertKnowledgeBulk(initialGivenKnowledge);
-
-					// should add a loop in here
 
 					do {
 
@@ -202,8 +164,7 @@ public class CheckingEngine {
 
 					} while (!((currentRelationCountInTemp == transitionKnowledgeHolder.getSize()) 
 							|| (stepFound) || (count==30)));
-	//			} while (!(count==10));
-
+					
 					if (stepFound) {
 					} 
 					else {
@@ -324,28 +285,6 @@ public class CheckingEngine {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	public boolean fireInfirenceEngineNew(KnowledgeHolder knowledgeHolder) {
-	
-		List<GeoRelation> allknowledge = knowledgeHolder.getFullKnowledge();
-		List<FactHandle> handle = new ArrayList<FactHandle>();
-		for (Iterator<GeoRelation> iterator = allknowledge.iterator(); iterator.hasNext();) {
-			GeoRelation geoRelation = (GeoRelation) iterator.next();
-
-			handle.add(kSession.insert(geoRelation));
-
-		}
-
-		// System.out.println("ran");
-
-		kSession.fireAllRules();
-		for (FactHandle factHandle : handle) {
-			kSession.retract(factHandle);
-		}
-
-		return true;
 	}
 	
 	public  static void setGraph(Graph graph){

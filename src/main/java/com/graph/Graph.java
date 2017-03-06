@@ -215,13 +215,11 @@ public class Graph implements java.io.Serializable {
 
 	public void addInitialKnowledge(KnowledgeHolder initialGivenKnowledge) {
 		
-		
-		
 		for (Iterator iterator = initialGivenKnowledge.getFullKnowledge().iterator(); iterator.hasNext();) {
 			GeoRelation relation = (GeoRelation) iterator.next();
 			
 			addRootNode(relation);
-			System.out.println(relation.getName() + "root");
+			//System.out.println(relation.getName() + "root");
 			
 		}
 		
@@ -257,7 +255,7 @@ public class Graph implements java.io.Serializable {
 								geoRelation.firstItem.getName() , geoRelation.secondItem.getName()))
 						{
 							removeTemp.add(parentNode);
-							System.out.println("ADDING PARENT " +graphNode.getName() + " : " +parentNode.getName() + " -> " + parentNode.getPredesisorNames());
+							//System.out.println("ADDING PARENT " +graphNode.getName() + " : " +parentNode.getName() + " -> " + parentNode.getPredesisorNames());
 							//parentNode.getPredesisors();
 							graphNode.addPredesisior(parentNode.getPredesisors());
 							
